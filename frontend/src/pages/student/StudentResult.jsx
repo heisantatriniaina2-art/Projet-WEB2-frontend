@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './StudentResult.css'; // Pour le style de la page des résultats
+import './StudentResult.css';
 
 export default function StudentResults() {
     const [results, setResults] = useState([]);
@@ -8,8 +8,6 @@ export default function StudentResults() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-
-        // Remplace cette URL par la route backend correspondante à tes résultats (ex: /api/my/results)
         fetch('http://localhost:3000/api/my/results', {
             method: 'GET',
             headers: {

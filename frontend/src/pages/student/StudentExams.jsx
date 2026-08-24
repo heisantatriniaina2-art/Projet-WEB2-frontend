@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './StudentExams.css'; // Ou ton fichier CSS habituel
+import './StudentExams.css';
 
 export default function StudentExams() {
     const [exams, setExams] = useState([]);

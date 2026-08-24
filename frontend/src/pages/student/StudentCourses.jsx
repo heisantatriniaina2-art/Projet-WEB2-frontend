@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './StudentCourses.css'; // Pour le style de la page des cours
+import './StudentCourses.css';
 
 export default function StudentCourses() {
     const [courses, setCourses] = useState([]);
@@ -9,7 +9,6 @@ export default function StudentCourses() {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        // Remplace cette URL par la route backend correspondante à tes cours (ex: /api/my/courses)
         fetch('http://localhost:3000/api/my/courses', {
             method: 'GET',
             headers: {

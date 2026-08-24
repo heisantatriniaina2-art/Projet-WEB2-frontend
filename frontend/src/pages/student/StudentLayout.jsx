@@ -5,7 +5,7 @@ import './StudentLayout.css';
 export default function StudentLayout({ onLogout }) {
     return (
         <div className="student-layout">
-            {/* La barre de navigation */}
+            { }
             <header className="student-header">
                 <h1>Exam Hub</h1>
                 <nav className="student-nav">
@@ -19,7 +19,7 @@ export default function StudentLayout({ onLogout }) {
                 </button>
             </header>
 
-            {/* Le contenu des pages s'affiche ici */}
+            { }
             <main className="student-content">
                 <Outlet />
             </main>
