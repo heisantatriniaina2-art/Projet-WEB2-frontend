@@ -7,6 +7,7 @@ export default function StudentPage() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+
     useEffect(() => {
         const token = localStorage.getItem('token');
 
