@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import LoginForm from './pages/LoginPage';
-import StudentDashboard from './pages/StudentPage';
+import LoginForm from './pages/login/LoginPage';
+import StudentDashboard from './pages/student/StudentPage';
 
 import Dashboard from './pages/admin/Dashboard';
 import Students from './pages/admin/Students';
