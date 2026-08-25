@@ -1,0 +1,39 @@
+.student-home-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.student-home-container h2 {
+    color: #2c3e50;
+}
+
+.welcome-text {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card h3 {
+    margin-bottom: 0.75rem;
+    color: #007bff;
+    font-size: 1.2rem;
+}
+
+.card p {
+    color: #555;
+    line-height: 1.5;
+}
