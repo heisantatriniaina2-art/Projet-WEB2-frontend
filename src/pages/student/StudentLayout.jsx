@@ -1,40 +1,26 @@
 import React from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import './StudentLayout.css';
 
 export default function StudentLayout({ onLogout }) {
-    const location = useLocation();
-    const isActive = (path) => location.pathname === path;
-
     return (
-        <div className="student-layout-container">
-            { }
-            <aside className="student-sidebar">
-                <div className="sidebar-top">
-                    <nav className="sidebar-nav">
-                        <Link to="/student" className={`sidebar-link ${isActive('/student') ? 'active' : ''}`}>
-                            <span className="icon">🏠</span> Accueil
-                        </Link>
-                        <Link to="/student/exams" className={`sidebar-link ${isActive('/student/exams') ? 'active' : ''}`}>
-                            <span className="icon">📝</span> Examens
-                        </Link>
-                        <Link to="/student/results" className={`sidebar-link ${isActive('/student/results') ? 'active' : ''}`}>
-                            <span className="icon">📊</span> Mes résultats
-                        </Link>
-                        <Link to="/student/courses" className={`sidebar-link ${isActive('/student/courses') ? 'active' : ''}`}>
-                            <span className="icon">📚</span> Cours
-                        </Link>
-                    </nav>
-                </div>
+        <div className="student-layout">
+            {/* Barre de navigation horizontale en haut */}
+            <header className="student-header">
+                <div className="brand-title">[ HEI ] Student Hub</div>
+                <nav className="student-nav">
+                    <Link to="/student" className="nav-link">Accueil</Link>
+                    <Link to="/student/exams" className="nav-link">Examens</Link>
+                    <Link to="/student/results" className="nav-link">Mes résultats</Link>
+                    <Link to="/student/courses" className="nav-link">Cours</Link>
+                </nav>
+                <button className="btn-logout" onClick={onLogout}>
+                    Déconnexion
+                </button>
+            </header>
 
-                <div className="sidebar-bottom">
-                    <button className="sidebar-logout" onClick={onLogout}>
-                        <span className="icon">🚪</span> Se déconnecter
-                    </button>
-                </div>
-            </aside>
-            { }
-            <main className="student-main-content">
+            {/* Contenu principal de la page */}
+            <main className="student-content">
                 <Outlet />
             </main>
         </div>
