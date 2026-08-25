@@ -11,11 +11,6 @@ export default function StudentLayout({ onLogout }) {
             { }
             <aside className="student-sidebar">
                 <div className="sidebar-top">
-                    <div className="sidebar-brand">
-                        <span className="brand-logo">[ HEI ]</span>
-                        <span className="brand-title">HEI Student</span>
-                    </div>
-
                     <nav className="sidebar-nav">
                         <Link to="/student" className={`sidebar-link ${isActive('/student') ? 'active' : ''}`}>
                             <span className="icon">🏠</span> Accueil
@@ -36,16 +31,9 @@ export default function StudentLayout({ onLogout }) {
                     <button className="sidebar-logout" onClick={onLogout}>
                         <span className="icon">🚪</span> Se déconnecter
                     </button>
-
-                    <div className="sidebar-contact">
-                        <p className="contact-title">Horaires d'ouverture</p>
-                        <div className="contact-info">📞 034 94 041 16</div>
-                        <div className="contact-info">✉️ contact@mail.hei.school</div>
-                    </div>
                 </div>
             </aside>
-
-            {/* Zone de contenu principale à droite */}
+            { }
             <main className="student-main-content">
                 <Outlet />
             </main>
