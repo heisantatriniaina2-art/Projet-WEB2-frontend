@@ -1,48 +1,43 @@
-import { Link } from "react-router-dom"
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getStudents } from '../../api/students';
+import { getCourses } from '../../api/courses';
+import { getExams } from '../../api/exams';
 
-function Dashboard() {
-    return (
-        <div>
-            <h1>examHub</h1>
+export default function Dashboard() {
+  const [stats, setStats] = useState({ students: 0, courses: 0, exams: 0 });
 
-            <h2>Tableau de bord</h2>
+  useEffect(() => {
+    Promise.all([
+      getStudents().catch(() => []),
+      getCourses().catch(() => []),
+      getExams().catch(() => [])
+    ]).then(([students, courses, exams]) => {
+      setStats({
+        students: students.length || 0,
+        courses: courses.length || 0,
+        exams: exams.length || 0
+      });
+    });
+  }, []);
 
-            <div>
-                <h3>Étudiants</h3>
-                <p>25</p>
-            </div>
-
-            <div>
-                <h3>Cours</h3>
-                <p>5</p>
-            </div>
-
-            <div>
-                <h3>Examens</h3>
-                <p>8</p>
-            </div>
-
-            <h2>Liens rapides</h2>
-
-            <div>
-                <Link to="/admin/students">
-                    Gérer les étudiants
-                </Link>
-            </div>
-
-            <div>
-                <Link to="/admin/courses">
-                    Gérer les cours
-                </Link>
-            </div>
-
-            <div>
-                <Link to="/admin/exams">
-                    Gérer les examens
-                </Link>
-            </div>
+  return (
+    <div>
+      <h1>Tableau de bord</h1>
+      <div className="card-grid">
+        <div className="card">
+          <Link to="/admin/students">Étudiants</Link>
+          <h3>{stats.students}</h3>
         </div>
-    )
+        <div className="card">
+          <Link to="/admin/courses">Cours</Link>
+          <h3>{stats.courses}</h3>
+        </div>
+        <div className="card">
+          <Link to="/admin/exams">Examens</Link>
+          <h3>{stats.exams}</h3>
+        </div>
+      </div>
+    </div>
+  );
 }
-
-export default Dashboard

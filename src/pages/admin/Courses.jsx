@@ -1,64 +1,34 @@
-import { useState } from "react"
+import { useEffect, useState } from 'react';
+import { getCourses } from '../../api/courses';
 
-function Courses() {
-    const [courses, setCourses] = useState([
-        {
-            id: 1,
-            code: "PROG2",
-            name: "Programmation 2",
-            description: "Programmation orientée objet"
-        },
-        {
-            id: 2,
-            code: "WEB2",
-            name: "Web 2",
-            description: "Développement web avec React"
-        }
-    ])
+export default function Courses() {
+  const [courses, setCourses] = useState([]);
 
-    function deleteCourse(id) {
-        const newCourses = courses.filter(
-            (course) => course.id !== id
-        )
+  useEffect(() => {
+    getCourses().then(setCourses).catch(console.error);
+  }, []);
 
-        setCourses(newCourses)
-    }
-
-    return (
-        <div>
-            <h1>Gestion des cours</h1>
-
-            <button>
-                Ajouter un cours
-            </button>
-
-            {courses.map((course) => (
-                <div key={course.id}>
-
-                    <h3>
-                        {course.code} - {course.name}
-                    </h3>
-
-                    <p>
-                        {course.description}
-                    </p>
-
-                    <button>
-                        Modifier
-                    </button>
-
-                    <button
-                        onClick={() =>
-                            deleteCourse(course.id)
-                        }
-                    >
-                        Supprimer
-                    </button>
-
-                </div>
-            ))}
-        </div>
-    )
+  return (
+    <div>
+      <h1>Gestion des Cours</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          {courses.map((c) => (
+            <tr key={c.id}>
+              <td>{c.id}</td>
+              <td>{c.title || c.name}</td>
+              <td>{c.code}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
-
-export default Courses
