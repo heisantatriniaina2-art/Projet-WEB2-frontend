@@ -1,48 +1,85 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { apiFetch } from "../../api/client";
 import { useAuth } from "../../contexts/AuthContext";
 
-export default function ExamSubmissionResult() {
-    const { id } = useParams();
+export default function Exams() {
     const { token } = useAuth();
-    const [result, setResult] = useState(null);
-    const [error, setError] = useState(null);
+
+    const [exams, setExams] = useState([]);
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // route à adapter selon ton backend :
-        // soit GET /api/my/exams/:id (avec correction si déjà passé)
-        // soit une entrée dédiée dans /api/my/results filtrée par examId
-        apiFetch(`/my/exams/${id}`, { token })
-            .then(setResult)
-            .catch(err => setError(err.message));
-    }, [id]);
+        const loadExams = async () => {
+            try {
+                const data = await apiFetch("/my/exams", {
+                    token
+                });
 
-    if (error) return <p role="alert" className="error">{error}</p>;
-    if (!result) return <p>Chargement…</p>;
+                setExams(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadExams();
+    }, [token]);
+
+    if (loading) {
+        return <p>Chargement des examens...</p>;
+    }
 
     return (
-        <div className="exam-result">
-            <h1>{result.title} — Résultat</h1>
-            <p className="score">
-                Note : {result.score} / {result.maxScore}
-            </p>
+        <div>
+            <h1>Examens disponibles</h1>
 
-            {result.questions.map(q => {
-                const isCorrect = q.studentChoiceId === q.correctChoiceId;
-                return (
-                    <div
-                        key={q.id}
-                        className={`question-review ${isCorrect ? "correct" : "incorrect"}`}
-                    >
-                        <p className="question-text">{q.text}</p>
-                        <p>Votre réponse : {q.studentChoiceText ?? "— sans réponse —"}</p>
-                        {!isCorrect && <p>Bonne réponse : {q.correctChoiceText}</p>}
-                    </div>
-                );
-            })}
+            {error && (
+                <p role="alert">
+                    {error}
+                </p>
+            )}
 
-            <Link to="/student/results">Retour à mes résultats</Link>
+            {!error && exams.length === 0 && (
+                <p>
+                    Aucun examen disponible pour le moment.
+                </p>
+            )}
+
+            {exams.length > 0 && (
+                <ul>
+                    {exams.map((exam) => (
+                        <li key={exam.id}>
+
+                            <h2>{exam.title}</h2>
+
+                            <p>
+                                {exam.description}
+                            </p>
+
+                            <p>
+                                Cours : {exam.courseName}
+                            </p>
+
+                            <p>
+                                Disponible jusqu'au :{" "}
+                                {new Date(
+                                    exam.endsAt
+                                ).toLocaleString()}
+                            </p>
+
+                            <Link
+                                to={`/student/exams/${exam.id}`}
+                            >
+                                Passer l'examen
+                            </Link>
+
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

@@ -3,102 +3,137 @@ import { useParams, useNavigate } from "react-router-dom";
 import { apiFetch } from "../../api/client";
 import { useAuth } from "../../contexts/AuthContext";
 
-
 export default function ExamTake() {
     const { id } = useParams();
     const { token } = useAuth();
     const navigate = useNavigate();
 
     const [exam, setExam] = useState(null);
-    const [answers, setAnswers] = useState({}); // { questionId: choiceId }
-    const [confirming, setConfirming] = useState(false);
-    const [error, setError] = useState(null);
+    const [answers, setAnswers] = useState({});
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
-        apiFetch(`/my/exams/${id}`, { token })
-            .then(setExam)
-            .catch(err => setError(err.message));
-    }, [id]);
+        const loadExam = async () => {
+            try {
+                const data = await apiFetch(`/my/exams/${id}`, {
+                    token
+                });
 
-    function selectChoice(questionId, choiceId) {
-        setAnswers(prev => ({ ...prev, [questionId]: choiceId }));
-    }
+                setExam(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    async function handleConfirmSubmit() {
+        loadExam();
+    }, [id, token]);
+
+    const handleAnswerChange = (questionId, choiceId) => {
+        setAnswers({
+            ...answers,
+            [questionId]: choiceId
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
         setSubmitting(true);
-        setError(null);
+        setError("");
+
         try {
-            // RG-06 : on n'envoie que les IDs choisis, jamais de note
-            const payload = {
-                answers: Object.entries(answers).map(([questionId, choiceId]) => ({
-                    questionId,
-                    choiceId,
-                })),
-            };
             await apiFetch(`/my/exams/${id}/submit`, {
                 method: "POST",
-                body: payload,
                 token,
+                body: {
+                    answers
+                }
             });
-            navigate(`/student/exams/${id}/result`);
+
+            navigate("/student/results");
+
         } catch (err) {
             setError(err.message);
-            setConfirming(false);
         } finally {
             setSubmitting(false);
         }
+    };
+
+    if (loading) {
+        return <p>Chargement de l'examen...</p>;
     }
 
-    if (error && !exam) return <p role="alert" className="error">{error}</p>;
-    if (!exam) return <p>Chargement…</p>;
+    if (error) {
+        return <p role="alert">{error}</p>;
+    }
 
-    const unanswered = exam.questions.filter(q => !answers[q.id]).length;
+    if (!exam) {
+        return <p>Examen introuvable.</p>;
+    }
 
     return (
-        <div className="exam-take">
+        <div>
             <h1>{exam.title}</h1>
-            {error && <p role="alert" className="error">{error}</p>}
 
-            {exam.questions.map(q => (
-                <fieldset key={q.id} className="question-block">
-                    <legend>{q.text} ({q.points} pt{q.points > 1 ? "s" : ""})</legend>
-                    {q.choices.map(c => (
-                        <label key={c.id} className="choice">
-                            <input
-                                type="radio"
-                                name={`question-${q.id}`}
-                                checked={answers[q.id] === c.id}
-                                onChange={() => selectChoice(q.id, c.id)}
-                            />
-                            {c.text}
-                        </label>
-                    ))}
-                </fieldset>
-            ))}
+            <p>{exam.description}</p>
 
-            <button onClick={() => setConfirming(true)} disabled={submitting}>
-                Soumettre l'examen
-            </button>
+            <form onSubmit={handleSubmit}>
 
-            {confirming && (
-                <div className="modal-backdrop">
-                    <div className="modal">
+                {exam.questions.map((question, index) => (
+                    <div key={question.id}>
+
+                        <h2>
+                            {index + 1}. {question.statement}
+                        </h2>
+
                         <p>
-                            Voulez-vous vraiment soumettre ? Cette action est définitive.
-                            {unanswered > 0 && (
-                                <><br />{unanswered} question(s) sans réponse (0 point).</>
-                            )}
+                            Points : {question.points}
                         </p>
-                        <button onClick={handleConfirmSubmit} disabled={submitting}>
-                            Confirmer
-                        </button>
-                        <button onClick={() => setConfirming(false)} disabled={submitting}>
-                            Annuler
-                        </button>
+
+                        {question.choices.map((choice) => (
+                            <label key={choice.id}>
+                                <input
+                                    type="radio"
+                                    name={`question-${question.id}`}
+                                    value={choice.id}
+                                    checked={
+                                        answers[question.id] === choice.id
+                                    }
+                                    onChange={() =>
+                                        handleAnswerChange(
+                                            question.id,
+                                            choice.id
+                                        )
+                                    }
+                                />
+
+                                {choice.label}
+                            </label>
+                        ))}
+
                     </div>
-                </div>
-            )}
+                ))}
+
+                {error && (
+                    <p role="alert">
+                        {error}
+                    </p>
+                )}
+
+                <button
+                    type="submit"
+                    disabled={submitting}
+                >
+                    {submitting
+                        ? "Envoi..."
+                        : "Terminer l'examen"}
+                </button>
+
+            </form>
         </div>
     );
-}
+} 

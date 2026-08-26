@@ -1,45 +1,99 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { apiFetch } from "../../api/client";
+import { Link, useNavigate } from "react-router-dom";
+import '../../App.css';
 import { useAuth } from "../../contexts/AuthContext";
 
-export default function ExamList() {
-    const { token } = useAuth();
-    const [exams, setExams] = useState([]);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
+export default function Dashboard() {
+    const { logout } = useAuth();
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        apiFetch("/my/exams", { token })
-            .then(setExams)
-            .catch(err => setError(err.message))
-            .finally(() => setLoading(false));
-    }, []);
-
-    if (loading) return <p>Chargement…</p>;
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    };
 
     return (
-        <div className="exam-list">
-            <h1>Examens disponibles</h1>
-            {error && <p role="alert" className="error">{error}</p>}
+        <div className="dashboard">
 
-            {exams.length === 0 && !error && (
-                <p>Aucun examen disponible pour le moment.</p>
-            )}
+            <header className="dashboard-header">
+                <div className="logo">
+                    <h1>Exam Hub</h1>
+                </div>
 
-            <ul className="exam-list__items">
-                {exams.map(exam => (
-                    <li key={exam.id} className="exam-card">
-                        <h2>{exam.title}</h2>
-                        <p>{exam.description}</p>
-                        <p className="exam-card__course">{exam.courseName}</p>
-                        <p className="exam-card__window">
-                            Disponible jusqu'au {new Date(exam.endsAt).toLocaleString()}
-                        </p>
-                        <Link to={`/student/exams/${exam.id}`}>Passer l'examen</Link>
-                    </li>
-                ))}
-            </ul>
+                <nav className="navbar">
+                    <Link to="/student" className="active">
+                        Tableau de bord
+                    </Link>
+
+                    <Link to="/student/exams">
+                        Examens
+                    </Link>
+
+                    <Link to="/student/results">
+                        Résultats
+                    </Link>
+                </nav>
+
+                <div className="student-profile">
+                    <div className="student-avatar">
+                        JD
+                    </div>
+
+                    <span>Jean Dupont</span>
+
+                    <button
+                        className="logout-button"
+                        onClick={handleLogout}
+                    >
+                        Déconnexion
+                    </button>
+                </div>
+            </header>
+
+            <main className="dashboard-content">
+                <section className="welcome">
+                    <h2>Bonjour Jean 👋</h2>
+                    <p>
+                        Bienvenue sur votre espace étudiant.
+                    </p>
+                </section>
+
+                <section className="dashboard-cards">
+
+                    <Link
+                        to="/student/exams"
+                        className="dashboard-card"
+                    >
+                        <div className="card-icon">📝</div>
+
+                        <div>
+                            <h3>Mes examens</h3>
+                            <p>
+                                Consultez les examens disponibles.
+                            </p>
+                        </div>
+
+                        <span className="arrow">→</span>
+                    </Link>
+
+                    <Link
+                        to="/student/results"
+                        className="dashboard-card"
+                    >
+                        <div className="card-icon">📊</div>
+
+                        <div>
+                            <h3>Mes résultats</h3>
+                            <p>
+                                Consultez vos résultats.
+                            </p>
+                        </div>
+
+                        <span className="arrow">→</span>
+                    </Link>
+
+                </section>
+            </main>
+
         </div>
     );
 }

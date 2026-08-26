@@ -1,210 +1,287 @@
+/* =========================
+   RESET
+========================= */
+
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #f8fafc;
-  font-family: Arial, sans-serif;
-  color: #1e293b;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f5f7fb;
+  color: #1f2937;
 }
 
-button {
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-}
 
-button:hover {
-  opacity: 0.9;
-}
+/* =========================
+   DASHBOARD
+========================= */
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.container {
-  width: 100%;
+.dashboard {
   min-height: 100vh;
+  background-color: #f5f7fb;
+}
 
+
+/* =========================
+   HEADER
+========================= */
+
+.dashboard-header {
+  height: 75px;
+  background-color: white;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-
-  background-color: #f8fafc;
-}
-
-
-.admin-container {
-  width: 100%;
-  min-height: 100vh;
-  padding: 30px;
-}
-
-.admin-header {
-  display: flex;
   justify-content: space-between;
+  padding: 0 50px;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.logo h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+  display: flex;
   align-items: center;
-
-  margin-bottom: 30px;
+  gap: 35px;
 }
 
-.admin-title {
-  margin: 0;
-  font-size: 30px;
+.navbar a {
+  text-decoration: none;
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 5px;
+  transition: all 0.2s ease;
 }
 
-.admin-menu {
+.navbar a:hover {
+  color: #2563eb;
+}
+
+.navbar a.active {
+  color: #2563eb;
+  font-weight: 600;
+  border-bottom: 2px solid #2563eb;
+}
+
+
+/* =========================
+   STUDENT PROFILE
+========================= */
+
+.student-profile {
   display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-
-  margin-bottom: 30px;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
 }
 
-.admin-menu a {
-  padding: 10px 16px;
+.student-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   background-color: #2563eb;
   color: white;
-  border-radius: 6px;
-}
-
-.admin-menu a:hover {
-  background-color: #1d4ed8;
-}
-
-
-.dashboard-cards {
-  display: grid;
-
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(200px, 1fr)
-  );
-
-  gap: 20px;
-}
-
-.dashboard-card {
-  padding: 25px;
-
-  background-color: white;
-
-  border-radius: 10px;
-
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.dashboard-card h3 {
-  margin-top: 0;
-}
-
-.dashboard-card p {
-  font-size: 28px;
-  font-weight: bold;
-}
-
-
-.list-container {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.list-item {
-  padding: 20px;
-
-  background-color: white;
-
-  border-radius: 8px;
-
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.list-item h3 {
-  margin-top: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 
-.btn {
-  padding: 10px 16px;
+/* =========================
+   CONTENT
+========================= */
 
-  border-radius: 6px;
-
-  background-color: #2563eb;
-
-  color: white;
-}
-
-.btn-danger {
-  background-color: #dc2626;
-}
-
-.btn-success {
-  background-color: #16a34a;
-}
-
-.btn-secondary {
-  background-color: #64748b;
+.dashboard-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 55px 30px;
 }
 
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* =========================
+   WELCOME
+========================= */
 
-  max-width: 500px;
+.welcome {
+  margin-bottom: 40px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.welcome h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #111827;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
-  padding: 10px;
-
-  border: 1px solid #cbd5e1;
-
-  border-radius: 6px;
-
+.welcome p {
+  color: #6b7280;
   font-size: 16px;
 }
 
 
-.error {
-  padding: 10px 15px;
+/* =========================
+   CARDS
+========================= */
 
-  margin-bottom: 15px;
-
-  background-color: #fee2e2;
-
-  color: #b91c1c;
-
-  border-radius: 6px;
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
 }
 
-@media (max-width: 700px) {
-  .admin-container {
-    padding: 15px;
+.dashboard-card {
+  background-color: white;
+  min-height: 150px;
+  padding: 25px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #e5e7eb;
+  transition: all 0.25s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border-color: #bfdbfe;
+}
+
+
+/* =========================
+   CARD ICON
+========================= */
+
+.card-icon {
+  width: 55px;
+  height: 55px;
+  border-radius: 12px;
+  background-color: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+
+/* =========================
+   CARD TEXT
+========================= */
+
+.dashboard-card h3 {
+  font-size: 18px;
+  color: #111827;
+  margin-bottom: 7px;
+}
+
+.dashboard-card p {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+
+/* =========================
+   ARROW
+========================= */
+
+.arrow {
+  margin-left: auto;
+  font-size: 25px;
+  color: #2563eb;
+  transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover .arrow {
+  transform: translateX(5px);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .dashboard-header {
+    padding: 0 20px;
   }
 
-  .admin-header {
-    flex-direction: column;
-    align-items: flex-start;
+  .navbar {
     gap: 15px;
   }
 
-  .admin-menu {
-    flex-direction: column;
+  .navbar a {
+    font-size: 13px;
   }
+
+  .student-profile span {
+    display: none;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome h2 {
+    font-size: 26px;
+  }
+}
+
+
+@media (max-width: 500px) {
+
+  .dashboard-header {
+    height: auto;
+    padding: 15px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .navbar {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dashboard-content {
+    padding: 35px 20px;
+  }
+}
+
+
+/*bouton deconnexion*/
+.logout-button {
+  border: none;
+  background-color: #ef4444;
+  color: white;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logout-button:hover {
+  background-color: #dc2626;
 }

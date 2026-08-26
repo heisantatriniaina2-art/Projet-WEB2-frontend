@@ -1,54 +1,74 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { apiFetch } from "../../api/client";
 import { useAuth } from "../../contexts/AuthContext";
 
-export default function ResultsHistory() {
+export default function Results() {
     const { token } = useAuth();
+
     const [results, setResults] = useState([]);
-    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
-        apiFetch("/my/results", { token })
-            .then(setResults)
-            .catch(err => setError(err.message))
-            .finally(() => setLoading(false));
-    }, []);
+        const loadResults = async () => {
+            try {
+                const data = await apiFetch("/my/results", {
+                    token
+                });
 
-    if (loading) return <p>Chargement…</p>;
+                setResults(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadResults();
+    }, [token]);
+
+    if (loading) {
+        return <p>Chargement des résultats...</p>;
+    }
 
     return (
-        <div className="results-history">
+        <div>
             <h1>Mes résultats</h1>
-            {error && <p role="alert" className="error">{error}</p>}
 
-            {results.length === 0 && !error && <p>Aucun examen passé pour le moment.</p>}
+            {error && (
+                <p role="alert">
+                    {error}
+                </p>
+            )}
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Examen</th>
-                        <th>Cours</th>
-                        <th>Date</th>
-                        <th>Note</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {results.map(r => (
-                        <tr key={r.examId}>
-                            <td>{r.examTitle}</td>
-                            <td>{r.courseName}</td>
-                            <td>{new Date(r.submittedAt).toLocaleString()}</td>
-                            <td>{r.score} / {r.maxScore}</td>
-                            <td>
-                                <Link to={`/student/exams/${r.examId}/result`}>Voir la correction</Link>
-                            </td>
-                        </tr>
+            {!error && results.length === 0 && (
+                <p>
+                    Vous n'avez encore aucun résultat.
+                </p>
+            )}
+
+            {results.length > 0 && (
+                <ul>
+                    {results.map((result) => (
+                        <li key={result.id}>
+
+                            <h2>{result.examTitle}</h2>
+
+                            <p>
+                                Score : {result.score}
+                            </p>
+
+                            <p>
+                                Date :{" "}
+                                {new Date(
+                                    result.submittedAt
+                                ).toLocaleString()}
+                            </p>
+
+                        </li>
                     ))}
-                </tbody>
-            </table>
+                </ul>
+            )}
         </div>
     );
 }
