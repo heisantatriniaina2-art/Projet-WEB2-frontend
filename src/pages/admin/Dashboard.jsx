@@ -30,12 +30,12 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        {/* Logo avec badge Admin */}
+        { }
         <div className="logo">
           <h1>Exam Hub <span className="admin-badge-tag">Admin</span></h1>
         </div>
 
-        {/* Navbar au centre */}
+        { }
         <nav className="navbar">
           <Link to="/admin" className="active">
             Tableau de bord
@@ -51,7 +51,7 @@ function Dashboard() {
           </Link>
         </nav>
 
-        {/* Profil + Déconnexion à droite */}
+        { }
         <div className="header-right">
           <div className="user-profile-header">
             <div className="user-profile-info">
@@ -76,7 +76,7 @@ function Dashboard() {
           </p>
         </section>
 
-        {/* Grille des statistiques modernisée */}
+        { }
         <section className="admin-stats-grid">
           <div className="stat-card">
             <div className="stat-icon">👥</div>
