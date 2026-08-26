@@ -1,84 +1,231 @@
-import { useState } from "react"
-import { useParams } from "react-router-dom"
+import { useState } from "react";
+import { useParams, Link } from "react-router-dom";
 
-function Questions() {
-    const { id } = useParams()
+export default function Questions() {
+  const { id } = useParams();
 
-    const [questions, setQuestions] = useState([
-        {
-            id: 1,
-            statement: "Qu'est-ce que React ?",
-            points: 2,
-            choices: [
-                {
-                    id: 1,
-                    text: "Une bibliothèque JavaScript",
-                    correct: true
-                },
-                {
-                    id: 2,
-                    text: "Une base de données",
-                    correct: false
-                },
-                {
-                    id: 3,
-                    text: "Un système d'exploitation",
-                    correct: false
-                }
-            ]
-        }
-    ])
+  const [questions, setQuestions] = useState([]);
 
-    return (
-        <div>
-            <h1>Questions</h1>
+  const [form, setForm] = useState({
+    statement: "",
+    points: "",
+    optionA: "",
+    optionB: "",
+    optionC: "",
+    optionD: "",
+    correctAnswer: ""
+  });
 
-            <p>Examen numéro : {id}</p>
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  };
 
-            <button>
-                Ajouter une question
-            </button>
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-            {questions.map((question) => (
-                <div key={question.id}>
+    const newQuestion = {
+      id: Date.now(),
+      statement: form.statement,
+      points: Number(form.points),
+      options: {
+        A: form.optionA,
+        B: form.optionB,
+        C: form.optionC,
+        D: form.optionD
+      },
+      correctAnswer: form.correctAnswer
+    };
 
-                    <h3>
-                        {question.statement}
-                    </h3>
+    setQuestions([...questions, newQuestion]);
 
-                    <p>
-                        Points : {question.points}
-                    </p>
+    setForm({
+      statement: "",
+      points: "",
+      optionA: "",
+      optionB: "",
+      optionC: "",
+      optionD: "",
+      correctAnswer: ""
+    });
+  };
 
-                    {question.choices.map((choice) => (
-                        <div key={choice.id}>
+  const handleDelete = (questionId) => {
+    setQuestions(
+      questions.filter((question) => question.id !== questionId)
+    );
+  };
 
-                            <input
-                                type="radio"
-                                name={`question-${question.id}`}
-                                checked={choice.correct}
-                                readOnly
-                            />
+  return (
+    <div className="admin-questions">
 
-                            <span>
-                                {choice.text}
-                            </span>
+      <h1>Gestion des questions</h1>
 
-                        </div>
-                    ))}
+      <p>
+        Examen : {id}
+      </p>
 
-                    <button>
-                        Modifier
-                    </button>
+      <Link to="/admin/exams">
+        ← Retour aux examens
+      </Link>
 
-                    <button>
-                        Supprimer
-                    </button>
+      <section>
+        <h2>Ajouter une question</h2>
 
-                </div>
-            ))}
-        </div>
-    )
+        <form onSubmit={handleSubmit}>
+
+          <div>
+            <label>Énoncé</label>
+
+            <textarea
+              name="statement"
+              value={form.statement}
+              onChange={handleChange}
+              placeholder="Écrivez l'énoncé de la question"
+              required
+            />
+          </div>
+
+          <div>
+            <label>Nombre de points</label>
+
+            <input
+              type="number"
+              name="points"
+              value={form.points}
+              onChange={handleChange}
+              min="1"
+              required
+            />
+          </div>
+
+          <div>
+            <label>Réponse A</label>
+
+            <input
+              type="text"
+              name="optionA"
+              value={form.optionA}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label>Réponse B</label>
+
+            <input
+              type="text"
+              name="optionB"
+              value={form.optionB}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label>Réponse C</label>
+
+            <input
+              type="text"
+              name="optionC"
+              value={form.optionC}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label>Réponse D</label>
+
+            <input
+              type="text"
+              name="optionD"
+              value={form.optionD}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <label>Bonne réponse</label>
+
+            <select
+              name="correctAnswer"
+              value={form.correctAnswer}
+              onChange={handleChange}
+              required
+            >
+              <option value="">
+                Sélectionner la bonne réponse
+              </option>
+
+              <option value="A">Réponse A</option>
+              <option value="B">Réponse B</option>
+              <option value="C">Réponse C</option>
+              <option value="D">Réponse D</option>
+            </select>
+          </div>
+
+          <button type="submit">
+            Ajouter la question
+          </button>
+
+        </form>
+      </section>
+
+      <section>
+        <h2>Questions de l'examen</h2>
+
+        {questions.length === 0 ? (
+          <p>Aucune question pour le moment.</p>
+        ) : (
+          questions.map((question, index) => (
+            <div
+              key={question.id}
+              className="question-card"
+            >
+              <h3>
+                Question {index + 1}
+              </h3>
+
+              <p>
+                {question.statement}
+              </p>
+
+              <p>
+                <strong>
+                  Points :
+                </strong>{" "}
+                {question.points}
+              </p>
+
+              <ul>
+                <li>A. {question.options.A}</li>
+                <li>B. {question.options.B}</li>
+                <li>C. {question.options.C}</li>
+                <li>D. {question.options.D}</li>
+              </ul>
+
+              <p>
+                <strong>
+                  Bonne réponse :
+                </strong>{" "}
+                {question.correctAnswer}
+              </p>
+
+              <button
+                onClick={() => handleDelete(question.id)}
+              >
+                Supprimer
+              </button>
+            </div>
+          ))
+        )}
+      </section>
+
+    </div>
+  );
 }
-
-export default Questions

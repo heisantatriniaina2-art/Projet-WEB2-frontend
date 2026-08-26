@@ -4,7 +4,6 @@ import { login as loginRequest } from "../services/authService";
 import { useAuth } from "../contexts/AuthContext";
 
 function Login() {
-
     const navigate = useNavigate();
     const { login } = useAuth();
 
@@ -23,12 +22,15 @@ function Login() {
             const data = await loginRequest(email, password);
 
             console.log("Connexion réussie :", data);
+
             login(data);
 
             if (data.user.role === "admin") {
                 navigate("/admin");
             } else if (data.user.role === "student") {
                 navigate("/student");
+            } else {
+                setError("Rôle utilisateur inconnu.");
             }
 
         } catch (error) {
@@ -69,9 +71,7 @@ function Login() {
                     />
                 </div>
 
-                {error && (
-                    <p>{error}</p>
-                )}
+                {error && <p>{error}</p>}
 
                 <button
                     type="submit"

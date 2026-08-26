@@ -7,25 +7,31 @@ export default function Exams() {
     const { token } = useAuth();
 
     const [exams, setExams] = useState([]);
-    const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
-        const loadExams = async () => {
+        const fetchExams = async () => {
             try {
-                const data = await apiFetch("/my/exams", {
-                    token
+                setLoading(true);
+                setError("");
+
+                const data = await apiFetch("/exams", {
+                    token,
                 });
 
                 setExams(data);
             } catch (err) {
-                setError(err.message);
+                console.error(err);
+                setError("Impossible de charger les examens.");
             } finally {
                 setLoading(false);
             }
         };
 
-        loadExams();
+        if (token) {
+            fetchExams();
+        }
     }, [token]);
 
     if (loading) {
@@ -33,53 +39,79 @@ export default function Exams() {
     }
 
     return (
-        <div>
-            <h1>Examens disponibles</h1>
+        <div className="student-exams">
 
-            {error && (
-                <p role="alert">
-                    {error}
-                </p>
-            )}
+            <header className="dashboard-header">
+                <div className="logo">
+                    <h1>Exam Hub</h1>
+                </div>
 
-            {!error && exams.length === 0 && (
-                <p>
-                    Aucun examen disponible pour le moment.
-                </p>
-            )}
+                <nav className="navbar">
+                    <Link to="/student">
+                        Tableau de bord
+                    </Link>
 
-            {exams.length > 0 && (
-                <ul>
+                    <Link to="/student/exams" className="active">
+                        Examens
+                    </Link>
+
+                    <Link to="/student/results">
+                        Résultats
+                    </Link>
+                </nav>
+            </header>
+
+            <main className="exams-content">
+
+                <h2>Examens disponibles</h2>
+
+                {error && (
+                    <p className="error-message">
+                        {error}
+                    </p>
+                )}
+
+                {!error && exams.length === 0 && (
+                    <p>
+                        Aucun examen disponible pour le moment.
+                    </p>
+                )}
+
+                <div className="exam-list">
+
                     {exams.map((exam) => (
-                        <li key={exam.id}>
-
-                            <h2>{exam.title}</h2>
+                        <div
+                            className="exam-card"
+                            key={exam.id}
+                        >
+                            <h3>{exam.title}</h3>
 
                             <p>
                                 {exam.description}
                             </p>
 
                             <p>
-                                Cours : {exam.courseName}
+                                <strong>Début :</strong>{" "}
+                                {new Date(exam.start_at).toLocaleString()}
                             </p>
 
                             <p>
-                                Disponible jusqu'au :{" "}
-                                {new Date(
-                                    exam.endsAt
-                                ).toLocaleString()}
+                                <strong>Fin :</strong>{" "}
+                                {new Date(exam.end_at).toLocaleString()}
                             </p>
 
                             <Link
-                                to={`/student/exams/${exam.id}`}
+                                to={`/student/exams/${exam.id}/take`}
                             >
-                                Passer l'examen
+                                Commencer l'examen
                             </Link>
-
-                        </li>
+                        </div>
                     ))}
-                </ul>
-            )}
+
+                </div>
+
+            </main>
+
         </div>
     );
 }
