@@ -10,23 +10,28 @@ import Results from './pages/admin/Results.jsx';
 
 function Layout({ links, children }) {
   return (
-    <div className="app-layout">
-      <aside className="sidebar">
+    <div className="admin-layout">
+      {/* BARRE EN HAUT AU LIEU DE D'ASIDE */}
+      <header className="admin-header">
         <h2>Examens - Admin</h2>
-        {links.map((l) => (
-          <NavLink key={l.to} to={l.to} end={l.end}>
-            {l.label}
-          </NavLink>
-        ))}
-      </aside>
-      <main className="content">{children}</main>
+        <nav className="admin-navbar">
+          {links.map((l) => (
+            <NavLink key={l.to} to={l.to} end={l.end}>
+              {l.label}
+            </NavLink>
+          ))}
+        </nav>
+      </header>
+
+      {/* CONTENU PRINCIPAL EN DESSOUS */}
+      <main className="admin-content">{children}</main>
     </div>
   );
 }
 
 const adminLinks = [
   { to: '/admin', label: 'Tableau de bord', end: true },
-  { to: '/admin/students', label: 'Etudiants' },
+  { to: '/admin/students', label: 'Étudiants' },
   { to: '/admin/courses', label: 'Cours' },
   { to: '/admin/exams', label: 'Examens' },
 ];
