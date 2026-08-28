@@ -47,7 +47,6 @@ function Questions() {
     setChoices([...choices, { text: "", correct: false }]);
   };
 
-  // Supprimer un champ choix (min 2)
   const handleRemoveChoice = (index) => {
     if (choices.length <= 2) {
       alert("Une question doit avoir au moins 2 choix.");
@@ -63,7 +62,6 @@ function Questions() {
     setChoices(updated);
   };
 
-  // Sélectionner le choix correct (un seul à la fois)
   const handleChoiceCorrectChange = (index) => {
     const updated = choices.map((choice, i) => ({
       ...choice,
