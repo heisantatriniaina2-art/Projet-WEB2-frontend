@@ -1,274 +1,390 @@
 /* =========================
-   RESET & GLOBAL
+   ADMIN PAGES (Students, Courses, Exams, Questions, Results)
 ========================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, sans-serif;
-}
 
-body {
-  min-height: 100vh;
-  background-color: #f5f7fb;
-  color: #1f2937;
+.admin-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
 }
-
-body > #root,
-#root > div {
-  min-height: 100vh;
-}
-
 /* =========================
-   LAYOUT ADMIN (TOP NAVBAR)
+   LAYOUT ADMIN (header + navbar en haut)
 ========================= */
+
 .admin-layout {
-  display: flex;
-  flex-direction: column;
+  display: block;
   min-height: 100vh;
   background-color: #f5f7fb;
 }
 
-/* Header / Barre de navigation en haut */
 .admin-header {
-  height: 75px;
-  background-color: #0f172a; /* Slate foncé élégant */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 15px 40px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .admin-header h2 {
-  font-size: 1.25rem;
+  font-size: 22px;
   font-weight: 700;
-  color: #38bdf8;
+  color: #2563eb;
+  margin: 0;
 }
 
 .admin-navbar {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
 }
 
-.admin-navbar a,
-.admin-navbar button {
-  color: #94a3b8;
+.admin-navbar a {
   text-decoration: none;
-  font-size: 0.95rem;
+  color: #6b7280;
+  font-size: 15px;
   font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 6px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 8px 4px;
+  transition: color 0.2s ease;
 }
 
-.admin-navbar a:hover,
-.admin-navbar button:hover {
-  color: #ffffff;
-  background-color: #1e293b;
+.admin-navbar a:hover {
+  color: #2563eb;
 }
 
 .admin-navbar a.active {
-  color: #ffffff;
-  background-color: #2563eb;
+  color: #2563eb;
   font-weight: 600;
+  border-bottom: 2px solid #2563eb;
 }
 
-/* Zone de contenu sous le header */
 .admin-content {
-  flex: 1;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 40px 30px;
+  padding: 30px 40px;
 }
 
-.admin-content h1 {
-  font-size: 1.8rem;
-  color: #111827;
-  margin-bottom: 24px;
+/* --- En-tête de page --- */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  color: #1e293b;
+  margin-bottom: 5px;
+}
+
+.page-header p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* --- Boutons principaux --- */
+.primary-button {
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.primary-button:hover {
+  background-color: #1d4ed8;
+}
+
+.secondary-button {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondary-button:hover {
+  background-color: #e2e8f0;
+}
+
+/* --- Titre du form-card (Ajouter/Modifier) --- */
+.form-card h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #1e293b;
+}
+
+/* --- select dans les form-group (ex: choix du cours) --- */
+.form-group select {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background-color: #fff;
+  color: #334155;
+  transition: border-color 0.2s;
+}
+
+.form-group select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* --- Actions du formulaire (submit / annuler) --- */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* --- Tableau (liste étudiants / cours / examens / résultats) --- */
+.table-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  overflow-x: auto;
+}
+
+.table-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-card th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-bottom: 2px solid #e2e8f0;
+  font-size: 13px;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.table-card td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  font-size: 14px;
+}
+
+.table-card tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* --- Boutons d'action dans les lignes du tableau --- */
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  background-color: #eff6ff;
+  color: #2563eb;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover {
+  background-color: #dbeafe;
+}
+
+.action-button.danger {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.action-button.danger:hover {
+  background-color: #fecaca;
+}
+
+.action-button.success {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.action-button.success:hover {
+  background-color: #bbf7d0;
+}
+
+/* --- Badges de statut (Students: Actif / Désactivé) --- */
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.status.active {
+  background-color: #dcfce7;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.status.inactive {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+/* --- Message "aucune donnée" --- */
+.empty-message {
+  color: #64748b;
+  text-align: center;
+  padding: 20px;
+}
+
+/* --- Lien retour (ex: Results.jsx "← Retour aux examens") --- */
+.admin-page > a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.admin-page > a:hover {
+  text-decoration: underline;
 }
 
 /* =========================
-   DASHBOARD & CARDS ADMIN
+   QUESTIONS (cartes imbriquées dans table-card)
 ========================= */
-.stats-container,
-.card-grid {
+
+/* Chaque question affichée comme une carte dans la liste */
+.table-card .form-card {
+  margin-bottom: 20px;
+  box-shadow: none;
+  border: 1px solid #e2e8f0;
+}
+
+.table-card .form-card:last-child {
+  margin-bottom: 0;
+}
+
+/* Titre "Question X — Y point(s)" */
+.form-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.form-card > p {
+  color: #475569;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+/* Liste des choix de réponse */
+.form-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 15px;
+}
+
+.form-card ul li {
+  padding: 6px 0;
+  font-size: 14px;
+  color: #475569;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.form-card ul li:last-child {
+  border-bottom: none;
+}
+
+/* =========================
+   DASHBOARD - cartes résumé
+========================= */
+
+.admin-page .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+  gap: 25px;
   margin-top: 20px;
 }
 
-.stat-card,
-.card {
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
+.admin-page .card {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 14px;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.stat-card:hover,
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+.admin-page .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
 }
 
-.stat-card a,
-.card a {
+.admin-page .card a {
   text-decoration: none;
+  color: #1e293b;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.admin-page .card a:hover {
   color: #2563eb;
-  font-weight: 600;
-  font-size: 1.1rem;
 }
 
-.stat-card h3,
-.card h3 {
-  font-size: 2.2rem;
-  margin-top: 10px;
-  color: #0f172a;
-}
-
-/* =========================
-   TABLEAUX
-========================= */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  margin-top: 20px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
-}
-
-th,
-td {
-  padding: 14px 18px;
-  text-align: left;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-th {
-  background-color: #f8fafc;
-  font-weight: 600;
-  color: #374151;
-}
-
-/* =========================
-   BOUTONS & UTILS
-========================= */
-.btn {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  background-color: #2563eb;
-  color: white;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.btn:hover {
-  background-color: #1d4ed8;
-}
-
-.btn-danger,
-.logout-button {
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
-}
-
-.btn-danger:hover,
-.logout-button:hover {
-  background-color: #dc2626;
-}
-
-/* =========================
-   PAGE DE LOGIN
-========================= */
-#root > div:not(.dashboard):not(.admin-layout) {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 30px;
-  background-color: #f5f7fb;
-}
-
-#root > div:not(.dashboard):not(.admin-layout) > h1 {
+.admin-page .card h3 {
+  margin-top: 12px;
+  font-size: 34px;
+  font-weight: 700;
   color: #2563eb;
-  font-size: 32px;
-  margin-bottom: 8px;
-}
-
-#root > div:not(.dashboard):not(.admin-layout) > form {
-  width: 100%;
-  max-width: 420px;
-  background-color: white;
-  padding: 35px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-}
-
-#root > div:not(.dashboard):not(.admin-layout) input {
-  width: 100%;
-  padding: 13px 15px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 15px;
-  outline: none;
-  margin-top: 6px;
-  margin-bottom: 18px;
-}
-
-#root > div:not(.dashboard):not(.admin-layout) input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-}
-
-#root > div:not(.dashboard):not(.admin-layout) button[type="submit"] {
-  width: 100%;
-  padding: 13px;
-  border: none;
-  border-radius: 8px;
-  background-color: #2563eb;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
 }
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE (pages admin)
 ========================= */
+
 @media (max-width: 768px) {
-  .admin-header {
-    flex-direction: column;
-    height: auto;
-    padding: 15px 20px;
-    gap: 12px;
+  .admin-page {
+    padding: 20px;
   }
 
-  .admin-navbar {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primary-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .table-card {
+    padding: 15px;
   }
 }
