@@ -11,7 +11,6 @@ import Results from './pages/admin/Results.jsx';
 function Layout({ links, children }) {
   return (
     <div className="admin-layout">
-      {/* BARRE EN HAUT AU LIEU DE D'ASIDE */}
       <header className="admin-header">
         <h2>Examens - Admin</h2>
         <nav className="admin-navbar">
@@ -23,7 +22,6 @@ function Layout({ links, children }) {
         </nav>
       </header>
 
-      {/* CONTENU PRINCIPAL EN DESSOUS */}
       <main className="admin-content">{children}</main>
     </div>
   );

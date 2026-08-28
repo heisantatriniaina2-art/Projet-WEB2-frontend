@@ -24,7 +24,6 @@ function Students() {
 
   const [editingStudent, setEditingStudent] = useState(null);
 
-  // Ajouter un étudiant
   const handleAdd = (e) => {
     e.preventDefault();
 
@@ -48,7 +47,7 @@ function Students() {
     setShowForm(false);
   };
 
-  // Préparer la modification
+  
   const handleEdit = (student) => {
     setEditingStudent(student);
     setName(student.name);
@@ -57,7 +56,6 @@ function Students() {
     setShowForm(true);
   };
 
-  // Modifier un étudiant
   const handleUpdate = (e) => {
     e.preventDefault();
 
@@ -85,7 +83,6 @@ function Students() {
     setShowForm(false);
   };
 
-  // Désactiver / réactiver un étudiant
   const handleToggleActive = (id) => {
     const updatedStudents = students.map((student) =>
       student.id === id
@@ -99,14 +96,12 @@ function Students() {
     setStudents(updatedStudents);
   };
 
-  // Réinitialiser le mot de passe
   const handleResetPassword = (student) => {
     alert(
       `Le mot de passe de ${student.name} sera réinitialisé.`
     );
   };
 
-  // Annuler le formulaire
   const handleCancel = () => {
     setShowForm(false);
     setEditingStudent(null);
@@ -138,7 +133,6 @@ function Students() {
         </button>
       </div>
 
-      {/* Formulaire */}
       {showForm && (
         <div className="form-card">
           <h2>
@@ -209,7 +203,6 @@ function Students() {
         </div>
       )}
 
-      {/* Tableau */}
       <div className="table-card">
         <table>
           <thead>
