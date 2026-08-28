@@ -4,114 +4,91 @@ import { apiFetch } from "../../api/client";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Exams() {
-    const { token } = useAuth();
+  const { token } = useAuth();
 
-    const [exams, setExams] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+  const [exams, setExams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    useEffect(() => {
-        const fetchExams = async () => {
-            try {
-                setLoading(true);
-                setError("");
+  useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-                const data = await apiFetch("/exams", {
-                    token,
-                });
+        const data = await apiFetch("/exams", {
+          token,
+        });
 
-                setExams(data);
-            } catch (err) {
-                console.error(err);
-                setError("Impossible de charger les examens.");
-            } finally {
-                setLoading(false);
-            }
-        };
+        setExams(data);
+      } catch (err) {
+        console.error(err);
+        setError("Impossible de charger les examens.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        if (token) {
-            fetchExams();
-        }
-    }, [token]);
-
-    if (loading) {
-        return <p>Chargement des examens...</p>;
+    if (token) {
+      fetchExams();
     }
+  }, [token]);
 
-    return (
-        <div className="student-exams">
+  if (loading) {
+    return <p>Chargement des examens...</p>;
+  }
 
-            <header className="dashboard-header">
-                <div className="logo">
-                    <h1>Exam Hub</h1>
-                </div>
-
-                <nav className="navbar">
-                    <Link to="/student">
-                        Tableau de bord
-                    </Link>
-
-                    <Link to="/student/exams" className="active">
-                        Examens
-                    </Link>
-
-                    <Link to="/student/results">
-                        Résultats
-                    </Link>
-                </nav>
-            </header>
-
-            <main className="exams-content">
-
-                <h2>Examens disponibles</h2>
-
-                {error && (
-                    <p className="error-message">
-                        {error}
-                    </p>
-                )}
-
-                {!error && exams.length === 0 && (
-                    <p>
-                        Aucun examen disponible pour le moment.
-                    </p>
-                )}
-
-                <div className="exam-list">
-
-                    {exams.map((exam) => (
-                        <div
-                            className="exam-card"
-                            key={exam.id}
-                        >
-                            <h3>{exam.title}</h3>
-
-                            <p>
-                                {exam.description}
-                            </p>
-
-                            <p>
-                                <strong>Début :</strong>{" "}
-                                {new Date(exam.start_at).toLocaleString()}
-                            </p>
-
-                            <p>
-                                <strong>Fin :</strong>{" "}
-                                {new Date(exam.end_at).toLocaleString()}
-                            </p>
-
-                            <Link
-                                to={`/student/exams/${exam.id}/take`}
-                            >
-                                Commencer l'examen
-                            </Link>
-                        </div>
-                    ))}
-
-                </div>
-
-            </main>
-
+  return (
+    <div className="student-exams">
+      <header className="dashboard-header">
+        <div className="logo">
+          <h1>Exam Hub</h1>
         </div>
-    );
+
+        <nav className="navbar">
+          <Link to="/student">Tableau de bord</Link>
+
+          <Link to="/student/exams" className="active">
+            Examens
+          </Link>
+
+          <Link to="/student/results">Résultats</Link>
+        </nav>
+      </header>
+
+      <main className="exams-content">
+        <h2>Examens disponibles</h2>
+
+        {error && <p className="error-message">{error}</p>}
+
+        {!error && exams.length === 0 && (
+          <p>Aucun examen disponible pour le moment.</p>
+        )}
+
+        <div className="exam-list">
+          {exams.map((exam) => (
+            <div className="exam-card" key={exam.id}>
+              <h3>{exam.title}</h3>
+
+              <p>{exam.description}</p>
+
+              <p>
+                <strong>Début :</strong>{" "}
+                {new Date(exam.start_at).toLocaleString()}
+              </p>
+
+              <p>
+                <strong>Fin :</strong>{" "}
+                {new Date(exam.end_at).toLocaleString()}
+              </p>
+
+              <Link to={`/student/exams/${exam.id}/take`}>
+                Commencer l'examen
+              </Link>
+            </div>
+          ))}
+        </div>
+      </main>
+    </div>
+  );
 }

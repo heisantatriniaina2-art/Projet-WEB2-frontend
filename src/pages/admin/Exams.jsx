@@ -155,7 +155,6 @@ function Exams() {
 
   return (
     <div className="admin-page">
-
       <div className="page-header">
         <div>
           <h1>Gestion des examens</h1>
@@ -180,13 +179,11 @@ function Exams() {
 
       {showForm && (
         <div className="form-card">
-
           <h2>
             {editingExam ? "Modifier un examen" : "Ajouter un examen"}
           </h2>
 
           <form onSubmit={editingExam ? handleUpdate : handleAdd}>
-
             <div className="form-group">
               <label>Titre</label>
 
@@ -246,7 +243,6 @@ function Exams() {
             </div>
 
             <div className="form-actions">
-
               <button type="submit" className="primary-button">
                 {editingExam
                   ? "Enregistrer les modifications"
@@ -260,17 +256,13 @@ function Exams() {
               >
                 Annuler
               </button>
-
             </div>
-
           </form>
         </div>
       )}
 
       <div className="table-card">
-
         <table>
-
           <thead>
             <tr>
               <th>Titre</th>
@@ -282,10 +274,8 @@ function Exams() {
           </thead>
 
           <tbody>
-
             {exams.map((exam) => (
               <tr key={exam.id}>
-
                 <td>{exam.title}</td>
 
                 <td>{exam.courseCode}</td>
@@ -296,7 +286,6 @@ function Exams() {
 
                 <td>
                   <div className="actions">
-
                     <button
                       className="action-button"
                       onClick={() => handleEdit(exam)}
@@ -328,23 +317,17 @@ function Exams() {
                     >
                       Résultats
                     </button>
-
                   </div>
                 </td>
-
               </tr>
             ))}
-
           </tbody>
-
         </table>
 
         {exams.length === 0 && (
           <p className="empty-message">Aucun examen enregistré.</p>
         )}
-
       </div>
-
     </div>
   );
 }

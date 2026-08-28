@@ -22,7 +22,6 @@ function Results() {
 
   return (
     <div className="admin-page">
-
       <Link to="/admin/exams">← Retour aux examens</Link>
 
       <div className="page-header" style={{ marginTop: "15px" }}>
@@ -42,9 +41,7 @@ function Results() {
       </div>
 
       <div className="table-card">
-
         <table>
-
           <thead>
             <tr>
               <th>Étudiant</th>
@@ -54,7 +51,6 @@ function Results() {
           </thead>
 
           <tbody>
-
             {results.map((r) => (
               <tr key={r.id}>
                 <td>{r.student}</td>
@@ -64,17 +60,13 @@ function Results() {
                 <td>{r.attempts}</td>
               </tr>
             ))}
-
           </tbody>
-
         </table>
 
         {results.length === 0 && (
           <p className="empty-message">Aucun résultat pour cet examen.</p>
         )}
-
       </div>
-
     </div>
   );
 }

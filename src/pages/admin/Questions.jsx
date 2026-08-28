@@ -190,7 +190,6 @@ function Questions() {
 
   return (
     <div className="admin-page">
-
       <Link to="/admin/exams">← Retour aux examens</Link>
 
       <div className="page-header" style={{ marginTop: "15px" }}>
@@ -225,13 +224,11 @@ function Questions() {
 
       {showForm && (
         <div className="form-card">
-
           <h2>
             {editingQuestion ? "Modifier la question" : "Ajouter une question"}
           </h2>
 
           <form onSubmit={editingQuestion ? handleUpdate : handleAdd}>
-
             <div className="form-group">
               <label>Énoncé</label>
 
@@ -301,7 +298,6 @@ function Questions() {
             </div>
 
             <div className="form-actions">
-
               <button type="submit" className="primary-button">
                 {editingQuestion
                   ? "Enregistrer les modifications"
@@ -315,18 +311,14 @@ function Questions() {
               >
                 Annuler
               </button>
-
             </div>
-
           </form>
         </div>
       )}
 
       <div className="table-card">
-
         {questions.map((question, index) => (
           <div key={question.id} className="form-card">
-
             <h3>
               Question {index + 1} — {question.points} point(s)
             </h3>
@@ -344,7 +336,6 @@ function Questions() {
             </ul>
 
             <div className="actions">
-
               <button
                 className="action-button"
                 onClick={() => handleEdit(question)}
@@ -358,18 +349,14 @@ function Questions() {
               >
                 Supprimer
               </button>
-
             </div>
-
           </div>
         ))}
 
         {questions.length === 0 && (
           <p className="empty-message">Aucune question pour cet examen.</p>
         )}
-
       </div>
-
     </div>
   );
 }

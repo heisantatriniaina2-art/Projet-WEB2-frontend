@@ -24,7 +24,6 @@ function Courses() {
 
   const [editingCourse, setEditingCourse] = useState(null);
 
-  
   const handleAdd = (e) => {
     e.preventDefault();
 
@@ -34,8 +33,7 @@ function Courses() {
     }
 
     const codeExists = courses.some(
-      (course) =>
-        course.code.toLowerCase() === code.toLowerCase()
+      (course) => course.code.toLowerCase() === code.toLowerCase()
     );
 
     if (codeExists) {
@@ -116,12 +114,9 @@ function Courses() {
       return;
     }
 
-    setCourses(
-      courses.filter((course) => course.id !== id)
-    );
+    setCourses(courses.filter((course) => course.id !== id));
   };
 
-  
   const handleCancel = () => {
     setShowForm(false);
     setEditingCourse(null);
@@ -133,7 +128,6 @@ function Courses() {
 
   return (
     <div className="admin-page">
-
       <div className="page-header">
         <div>
           <h1>Gestion des cours</h1>
@@ -156,66 +150,43 @@ function Courses() {
 
       {showForm && (
         <div className="form-card">
-
           <h2>
-            {editingCourse
-              ? "Modifier un cours"
-              : "Ajouter un cours"}
+            {editingCourse ? "Modifier un cours" : "Ajouter un cours"}
           </h2>
 
-          <form
-            onSubmit={
-              editingCourse
-                ? handleUpdate
-                : handleAdd
-            }
-          >
-
+          <form onSubmit={editingCourse ? handleUpdate : handleAdd}>
             <div className="form-group">
               <label>Code du cours</label>
-
               <input
                 type="text"
                 value={code}
-                onChange={(e) =>
-                  setCode(e.target.value)
-                }
+                onChange={(e) => setCode(e.target.value)}
                 placeholder="Exemple : PROG2"
               />
             </div>
 
             <div className="form-group">
               <label>Nom du cours</label>
-
               <input
                 type="text"
                 value={name}
-                onChange={(e) =>
-                  setName(e.target.value)
-                }
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Exemple : Programmation 2"
               />
             </div>
 
             <div className="form-group">
               <label>Description</label>
-
               <textarea
                 value={description}
-                onChange={(e) =>
-                  setDescription(e.target.value)
-                }
+                onChange={(e) => setDescription(e.target.value)}
                 placeholder="Description du cours"
                 rows="4"
               />
             </div>
 
             <div className="form-actions">
-
-              <button
-                type="submit"
-                className="primary-button"
-              >
+              <button type="submit" className="primary-button">
                 {editingCourse
                   ? "Enregistrer les modifications"
                   : "Créer le cours"}
@@ -228,17 +199,13 @@ function Courses() {
               >
                 Annuler
               </button>
-
             </div>
-
           </form>
         </div>
       )}
 
       <div className="table-card">
-
         <table>
-
           <thead>
             <tr>
               <th>Code</th>
@@ -249,55 +216,37 @@ function Courses() {
           </thead>
 
           <tbody>
-
             {courses.map((course) => (
               <tr key={course.id}>
-
                 <td>{course.code}</td>
-
                 <td>{course.name}</td>
-
                 <td>{course.description}</td>
-
                 <td>
                   <div className="actions">
-
                     <button
                       className="action-button"
-                      onClick={() =>
-                        handleEdit(course)
-                      }
+                      onClick={() => handleEdit(course)}
                     >
                       Modifier
                     </button>
 
                     <button
                       className="action-button danger"
-                      onClick={() =>
-                        handleDelete(course.id)
-                      }
+                      onClick={() => handleDelete(course.id)}
                     >
                       Supprimer
                     </button>
-
                   </div>
                 </td>
-
               </tr>
             ))}
-
           </tbody>
-
         </table>
 
         {courses.length === 0 && (
-          <p className="empty-message">
-            Aucun cours enregistré.
-          </p>
+          <p className="empty-message">Aucun cours enregistré.</p>
         )}
-
       </div>
-
     </div>
   );
 }

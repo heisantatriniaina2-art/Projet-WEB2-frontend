@@ -47,7 +47,6 @@ function Students() {
     setShowForm(false);
   };
 
-  
   const handleEdit = (student) => {
     setEditingStudent(student);
     setName(student.name);
@@ -112,7 +111,6 @@ function Students() {
 
   return (
     <div className="admin-page">
-
       <div className="page-header">
         <div>
           <h1>Gestion des étudiants</h1>
@@ -235,7 +233,6 @@ function Students() {
 
                 <td>
                   <div className="actions">
-
                     <button
                       className="action-button"
                       onClick={() => handleEdit(student)}
@@ -266,7 +263,6 @@ function Students() {
                         ? "Désactiver"
                         : "Activer"}
                     </button>
-
                   </div>
                 </td>
               </tr>
@@ -280,7 +276,6 @@ function Students() {
           </p>
         )}
       </div>
-
     </div>
   );
 }
