@@ -4,7 +4,7 @@ import "../../App.css";
 
 function Dashboard() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ name: "", role: "Étudiant" });
+  const [user, setUser] = useState({ name: "", role: "Student" });
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -13,10 +13,10 @@ function Dashboard() {
         const parsed = JSON.parse(storedUser);
         setUser({
           name: parsed.name || parsed.email || "",
-          role: parsed.role === "admin" ? "Administrateur" : "Étudiant",
+          role: parsed.role === "admin" ? "Administrator" : "Student",
         });
       } catch (e) {
-        console.error("Erreur", e);
+        console.error("Error", e);
       }
     }
   }, []);
@@ -31,43 +31,43 @@ function Dashboard() {
     <div className="admin-page">
       <div className="page-header">
         <div>
-          <h1>Bienvenue 👋 {user.name}</h1>
+          <h1>Welcome 👋 {user.name}</h1>
           <p>
-            Retrouvez vos examens, passez vos QCM et consultez vos résultats.
+            Find your exams, take your quizzes, and view your results.
           </p>
         </div>
         <button onClick={handleLogout} className="action-button danger">
-          Déconnexion
+          Log Out
         </button>
       </div>
 
       <div className="card-grid">
         <div className="card">
-          <h3>📝 Examens</h3>
+          <h3>📝 Exams</h3>
           <p>
-            Consultez les examens disponibles et passez vos QCM.
+            View available exams and take your quizzes.
           </p>
           <Link to="/student/exams" style={{ marginTop: "auto" }}>
             <button
               className="primary-button"
               style={{ width: "100%", marginTop: "1rem" }}
             >
-              Voir les examens
+              View Exams
             </button>
           </Link>
         </div>
 
         <div className="card">
-          <h3>📊 Résultats</h3>
+          <h3>📊 Results</h3>
           <p>
-            Consultez vos notes et les résultats de vos examens.
+            Check your grades and review your exam results.
           </p>
           <Link to="/student/results" style={{ marginTop: "auto" }}>
             <button
               className="secondary-button"
               style={{ width: "100%", marginTop: "1rem" }}
             >
-              Voir mes résultats
+              View My Results
             </button>
           </Link>
         </div>

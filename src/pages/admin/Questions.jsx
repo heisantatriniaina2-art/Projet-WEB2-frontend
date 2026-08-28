@@ -9,7 +9,7 @@ function Questions() {
   const [questions, setQuestions] = useState([
     {
       id: 1,
-      statement: "Quel langage utilise React ?",
+      statement: "Which language does React use?",
       points: 2,
       choices: [
         { id: 1, text: "Java", correct: false },
@@ -20,7 +20,7 @@ function Questions() {
     },
     {
       id: 2,
-      statement: "Quelle commande installe un package npm ?",
+      statement: "Which command installs an npm package?",
       points: 1,
       choices: [
         { id: 1, text: "npm install", correct: true },
@@ -41,7 +41,7 @@ function Questions() {
 
   const handleAddChoice = () => {
     if (choices.length >= 6) {
-      alert("Une question ne peut pas avoir plus de 6 choix.");
+      alert("A question cannot have more than 6 choices.");
       return;
     }
     setChoices([...choices, { text: "", correct: false }]);
@@ -49,7 +49,7 @@ function Questions() {
 
   const handleRemoveChoice = (index) => {
     if (choices.length <= 2) {
-      alert("Une question doit avoir au moins 2 choix.");
+      alert("A question must have at least 2 choices.");
       return;
     }
     setChoices(choices.filter((_, i) => i !== index));
@@ -83,24 +83,24 @@ function Questions() {
 
   const validateQuestion = () => {
     if (!statement || !points) {
-      alert("Veuillez remplir l'énoncé et le nombre de points.");
+      alert("Please enter the question statement and the point value.");
       return false;
     }
 
     if (choices.length < 2 || choices.length > 6) {
-      alert("Une question doit avoir entre 2 et 6 choix.");
+      alert("A question must have between 2 and 6 choices.");
       return false;
     }
 
     if (choices.some((choice) => !choice.text)) {
-      alert("Tous les choix doivent avoir un texte.");
+      alert("All choices must contain text.");
       return false;
     }
 
     const correctCount = choices.filter((choice) => choice.correct).length;
 
     if (correctCount !== 1) {
-      alert("Exactement un choix doit être marqué comme correct.");
+      alert("Exactly one choice must be marked as correct.");
       return false;
     }
 
@@ -130,7 +130,7 @@ function Questions() {
   const handleEdit = (question) => {
     if (examHasAttempts) {
       alert(
-        "Cet examen a déjà des tentatives : les questions ne sont plus modifiables."
+        "This exam already has submitted attempts: questions can no longer be edited."
       );
       return;
     }
@@ -174,13 +174,13 @@ function Questions() {
   const handleDelete = (questionId) => {
     if (examHasAttempts) {
       alert(
-        "Cet examen a déjà des tentatives : les questions ne sont plus supprimables."
+        "This exam already has submitted attempts: questions can no longer be deleted."
       );
       return;
     }
 
     const confirmation = window.confirm(
-      "Voulez-vous vraiment supprimer cette question ?"
+      "Are you sure you want to delete this question?"
     );
 
     if (!confirmation) return;
@@ -190,12 +190,12 @@ function Questions() {
 
   return (
     <div className="admin-page">
-      <Link to="/admin/exams">← Retour aux examens</Link>
+      <Link to="/admin/exams">← Back to exams</Link>
 
       <div className="page-header" style={{ marginTop: "15px" }}>
         <div>
-          <h1>Questions de l'examen #{id}</h1>
-          <p>Gérer les questions et leurs choix de réponse.</p>
+          <h1>Questions for Exam #{id}</h1>
+          <p>Manage questions and their answer choices.</p>
         </div>
 
         <button
@@ -203,7 +203,7 @@ function Questions() {
           onClick={() => {
             if (examHasAttempts) {
               alert(
-                "Cet examen a déjà des tentatives : impossible d'ajouter des questions."
+                "This exam already has submitted attempts: cannot add new questions."
               );
               return;
             }
@@ -211,31 +211,30 @@ function Questions() {
             setShowForm(true);
           }}
         >
-          + Ajouter une question
+          + Add Question
         </button>
       </div>
 
       {examHasAttempts && (
         <p className="empty-message">
-          ⚠️ Cet examen a déjà au moins une tentative : les questions sont
-          verrouillées (lecture seule).
+          ⚠️ This exam already has at least one attempt: questions are locked (read-only).
         </p>
       )}
 
       {showForm && (
         <div className="form-card">
           <h2>
-            {editingQuestion ? "Modifier la question" : "Ajouter une question"}
+            {editingQuestion ? "Edit Question" : "Add Question"}
           </h2>
 
           <form onSubmit={editingQuestion ? handleUpdate : handleAdd}>
             <div className="form-group">
-              <label>Énoncé</label>
+              <label>Question Statement</label>
 
               <textarea
                 value={statement}
                 onChange={(e) => setStatement(e.target.value)}
-                placeholder="Exemple : Quel langage utilise React ?"
+                placeholder="Example: Which language does React use?"
                 rows="3"
               />
             </div>
@@ -248,12 +247,12 @@ function Questions() {
                 min="1"
                 value={points}
                 onChange={(e) => setPoints(e.target.value)}
-                placeholder="Exemple : 2"
+                placeholder="Example: 2"
               />
             </div>
 
             <div className="form-group">
-              <label>Choix de réponse (2 à 6, un seul correct)</label>
+              <label>Answer Choices (2 to 6, exactly one correct)</label>
 
               {choices.map((choice, index) => (
                 <div
@@ -274,7 +273,7 @@ function Questions() {
                     onChange={(e) =>
                       handleChoiceTextChange(index, e.target.value)
                     }
-                    placeholder={`Choix ${index + 1}`}
+                    placeholder={`Choice ${index + 1}`}
                     style={{ flex: 1 }}
                   />
 
@@ -283,7 +282,7 @@ function Questions() {
                     className="action-button danger"
                     onClick={() => handleRemoveChoice(index)}
                   >
-                    Retirer
+                    Remove
                   </button>
                 </div>
               ))}
@@ -293,15 +292,15 @@ function Questions() {
                 className="secondary-button"
                 onClick={handleAddChoice}
               >
-                + Ajouter un choix
+                + Add Choice
               </button>
             </div>
 
             <div className="form-actions">
               <button type="submit" className="primary-button">
                 {editingQuestion
-                  ? "Enregistrer les modifications"
-                  : "Créer la question"}
+                  ? "Save Changes"
+                  : "Create Question"}
               </button>
 
               <button
@@ -309,7 +308,7 @@ function Questions() {
                 className="secondary-button"
                 onClick={resetForm}
               >
-                Annuler
+                Cancel
               </button>
             </div>
           </form>
@@ -340,21 +339,21 @@ function Questions() {
                 className="action-button"
                 onClick={() => handleEdit(question)}
               >
-                Modifier
+                Edit
               </button>
 
               <button
                 className="action-button danger"
                 onClick={() => handleDelete(question.id)}
               >
-                Supprimer
+                Delete
               </button>
             </div>
           </div>
         ))}
 
         {questions.length === 0 && (
-          <p className="empty-message">Aucune question pour cet examen.</p>
+          <p className="empty-message">No questions found for this exam.</p>
         )}
       </div>
     </div>

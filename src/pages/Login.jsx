@@ -21,7 +21,7 @@ function Login() {
     try {
       const data = await loginRequest(email, password);
 
-      console.log("Connexion réussie :", data);
+      console.log("Login successful:", data);
 
       login(data);
 
@@ -30,7 +30,7 @@ function Login() {
       } else if (data.user.role === "student") {
         navigate("/student");
       } else {
-        setError("Rôle utilisateur inconnu.");
+        setError("Unknown user role.");
       }
     } catch (error) {
       setError(error.message);
@@ -42,7 +42,7 @@ function Login() {
   return (
     <div className="login-page">
       <h1>Exam Hub</h1>
-      <h2>Connexion</h2>
+      <h2>Login</h2>
 
       <div className="form-card">
         <form onSubmit={handleSubmit}>
@@ -52,18 +52,18 @@ function Login() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Votre email"
+              placeholder="Enter your email"
               required
             />
           </div>
 
           <div className="form-group">
-            <label>Mot de passe</label>
+            <label>Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Votre mot de passe"
+              placeholder="Enter your password"
               required
             />
           </div>
@@ -86,7 +86,7 @@ function Login() {
             className="primary-button"
             disabled={loading}
           >
-            {loading ? "Connexion..." : "Se connecter"}
+            {loading ? "Logging in..." : "Log In"}
           </button>
         </form>
       </div>

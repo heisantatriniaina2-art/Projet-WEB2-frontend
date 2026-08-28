@@ -27,7 +27,7 @@ export default function ExamTake() {
         setExam(data);
       } catch (err) {
         console.error(err);
-        setError("Impossible de charger cet examen.");
+        setError("Unable to load this exam.");
       } finally {
         setLoading(false);
       }
@@ -74,7 +74,7 @@ export default function ExamTake() {
       });
     } catch (err) {
       console.error(err);
-      setError("Impossible de soumettre l'examen.");
+      setError("Unable to submit the exam.");
     } finally {
       setSubmitting(false);
     }
@@ -83,7 +83,7 @@ export default function ExamTake() {
   if (loading) {
     return (
       <div className="exam-take">
-        <p>Chargement de l'examen...</p>
+        <p>Loading exam...</p>
       </div>
     );
   }
@@ -99,7 +99,7 @@ export default function ExamTake() {
   if (!exam) {
     return (
       <div className="exam-take">
-        <p>Examen introuvable.</p>
+        <p>Exam not found.</p>
       </div>
     );
   }
@@ -151,7 +151,7 @@ export default function ExamTake() {
               </div>
             ))
           ) : (
-            <p>Aucune question disponible pour cet examen.</p>
+            <p>No questions available for this exam.</p>
           )}
 
           {exam.questions?.length > 0 && (
@@ -160,7 +160,7 @@ export default function ExamTake() {
               disabled={submitting}
               className="submit-exam-button"
             >
-              {submitting ? "Envoi en cours..." : "Terminer l'examen"}
+              {submitting ? "Submitting..." : "Finish Exam"}
             </button>
           )}
         </form>

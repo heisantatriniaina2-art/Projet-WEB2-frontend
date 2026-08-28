@@ -10,8 +10,8 @@ export default function Results() {
       <div className="admin-page">
         <div className="page-header">
           <div>
-            <h1>Résultats d'examen</h1>
-            <p>Consultez la note et le bilan de votre évaluation.</p>
+            <h1>Exam Results</h1>
+            <p>View your grade and assessment summary.</p>
           </div>
         </div>
 
@@ -19,14 +19,13 @@ export default function Results() {
           className="card"
           style={{ textAlign: "center", padding: "3rem 1.5rem" }}
         >
-          <h2 style={{ marginBottom: "0.5rem" }}>Aucun résultat à afficher</h2>
+          <h2 style={{ marginBottom: "0.5rem" }}>No results to display</h2>
           <p style={{ color: "#6b7280", marginBottom: "1.5rem" }}>
-            Vous n'avez pas encore terminé d'examen ou vous êtes arrivé
-            directement sur cette page.
+            You have not completed an exam yet or you navigated directly to this page.
           </p>
           <Link to="/student/exams">
             <button className="primary-button">
-              Voir les examens disponibles
+              View Available Exams
             </button>
           </Link>
         </div>
@@ -38,14 +37,14 @@ export default function Results() {
     <div className="admin-page">
       <div className="page-header">
         <div>
-          <h1>Résultat de l'examen</h1>
-          <p>Voici le récapitulatif de votre performance.</p>
+          <h1>Exam Result</h1>
+          <p>Here is the summary of your performance.</p>
         </div>
       </div>
 
       <div className="card" style={{ maxWidth: "600px", margin: "0 auto" }}>
         <h2 style={{ color: "#4f46e5", marginBottom: "1rem" }}>
-          {result.exam_title || "Examen terminé"}
+          {result.exam_title || "Exam Completed"}
         </h2>
 
         <div
@@ -60,7 +59,7 @@ export default function Results() {
           <span
             style={{ display: "block", color: "#6b7280", fontSize: "0.9rem" }}
           >
-            Note obtenue
+            Score Obtained
           </span>
           <strong style={{ fontSize: "2.5rem", color: "#111827" }}>
             {result.score ?? 0}
@@ -69,19 +68,19 @@ export default function Results() {
 
         {result.total_points !== undefined && (
           <p style={{ marginBottom: "0.5rem" }}>
-            Total de l'examen : <strong>{result.total_points} point(s)</strong>
+            Total Points: <strong>{result.total_points} point(s)</strong>
           </p>
         )}
 
         {result.percentage !== undefined && (
           <p style={{ marginBottom: "1.5rem" }}>
-            Pourcentage : <strong>{result.percentage}%</strong>
+            Percentage: <strong>{result.percentage}%</strong>
           </p>
         )}
 
         <Link to="/student/exams">
           <button className="secondary-button" style={{ width: "100%" }}>
-            Retour aux examens
+            Back to Exams
           </button>
         </Link>
       </div>

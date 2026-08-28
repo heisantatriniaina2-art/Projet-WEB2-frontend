@@ -28,7 +28,7 @@ function Students() {
     e.preventDefault();
 
     if (!name || !email || !password) {
-      alert("Veuillez remplir tous les champs.");
+      alert("Please fill in all fields.");
       return;
     }
 
@@ -59,7 +59,7 @@ function Students() {
     e.preventDefault();
 
     if (!name || !email) {
-      alert("Veuillez remplir le nom et l'email.");
+      alert("Please fill in the name and email fields.");
       return;
     }
 
@@ -97,7 +97,7 @@ function Students() {
 
   const handleResetPassword = (student) => {
     alert(
-      `Le mot de passe de ${student.name} sera réinitialisé.`
+      `The password for ${student.name} will be reset.`
     );
   };
 
@@ -113,8 +113,8 @@ function Students() {
     <div className="admin-page">
       <div className="page-header">
         <div>
-          <h1>Gestion des étudiants</h1>
-          <p>Créer et gérer les comptes étudiants.</p>
+          <h1>Student Management</h1>
+          <p>Create and manage student accounts.</p>
         </div>
 
         <button
@@ -127,7 +127,7 @@ function Students() {
             setShowForm(true);
           }}
         >
-          + Ajouter un étudiant
+          + Add Student
         </button>
       </div>
 
@@ -135,8 +135,8 @@ function Students() {
         <div className="form-card">
           <h2>
             {editingStudent
-              ? "Modifier un étudiant"
-              : "Ajouter un étudiant"}
+              ? "Edit Student"
+              : "Add Student"}
           </h2>
 
           <form
@@ -145,13 +145,13 @@ function Students() {
             }
           >
             <div className="form-group">
-              <label>Nom</label>
+              <label>Name</label>
 
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Nom de l'étudiant"
+                placeholder="Student name"
               />
             </div>
 
@@ -168,13 +168,13 @@ function Students() {
 
             {!editingStudent && (
               <div className="form-group">
-                <label>Mot de passe initial</label>
+                <label>Initial Password</label>
 
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Mot de passe"
+                  placeholder="Password"
                 />
               </div>
             )}
@@ -185,8 +185,8 @@ function Students() {
                 className="primary-button"
               >
                 {editingStudent
-                  ? "Enregistrer les modifications"
-                  : "Créer l'étudiant"}
+                  ? "Save Changes"
+                  : "Create Student"}
               </button>
 
               <button
@@ -194,7 +194,7 @@ function Students() {
                 className="secondary-button"
                 onClick={handleCancel}
               >
-                Annuler
+                Cancel
               </button>
             </div>
           </form>
@@ -205,9 +205,9 @@ function Students() {
         <table>
           <thead>
             <tr>
-              <th>Nom</th>
+              <th>Name</th>
               <th>Email</th>
-              <th>Statut</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -222,11 +222,11 @@ function Students() {
                 <td>
                   {student.active ? (
                     <span className="status active">
-                      Actif
+                      Active
                     </span>
                   ) : (
                     <span className="status inactive">
-                      Désactivé
+                      Disabled
                     </span>
                   )}
                 </td>
@@ -237,7 +237,7 @@ function Students() {
                       className="action-button"
                       onClick={() => handleEdit(student)}
                     >
-                      Modifier
+                      Edit
                     </button>
 
                     <button
@@ -246,7 +246,7 @@ function Students() {
                         handleResetPassword(student)
                       }
                     >
-                      Réinitialiser
+                      Reset Password
                     </button>
 
                     <button
@@ -260,8 +260,8 @@ function Students() {
                       }
                     >
                       {student.active
-                        ? "Désactiver"
-                        : "Activer"}
+                        ? "Disable"
+                        : "Enable"}
                     </button>
                   </div>
                 </td>
@@ -272,7 +272,7 @@ function Students() {
 
         {students.length === 0 && (
           <p className="empty-message">
-            Aucun étudiant enregistré.
+            No registered students.
           </p>
         )}
       </div>

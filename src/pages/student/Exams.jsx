@@ -23,7 +23,7 @@ export default function Exams() {
         setExams(data);
       } catch (err) {
         console.error(err);
-        setError("Impossible de charger les examens.");
+        setError("Unable to load exams.");
       } finally {
         setLoading(false);
       }
@@ -35,7 +35,7 @@ export default function Exams() {
   }, [token]);
 
   if (loading) {
-    return <p>Chargement des examens...</p>;
+    return <p>Loading exams...</p>;
   }
 
   return (
@@ -46,23 +46,23 @@ export default function Exams() {
         </div>
 
         <nav className="navbar">
-          <Link to="/student">Tableau de bord</Link>
+          <Link to="/student">Dashboard</Link>
 
           <Link to="/student/exams" className="active">
-            Examens
+            Exams
           </Link>
 
-          <Link to="/student/results">Résultats</Link>
+          <Link to="/student/results">Results</Link>
         </nav>
       </header>
 
       <main className="exams-content">
-        <h2>Examens disponibles</h2>
+        <h2>Available Exams</h2>
 
         {error && <p className="error-message">{error}</p>}
 
         {!error && exams.length === 0 && (
-          <p>Aucun examen disponible pour le moment.</p>
+          <p>No exams available at the moment.</p>
         )}
 
         <div className="exam-list">
@@ -73,17 +73,17 @@ export default function Exams() {
               <p>{exam.description}</p>
 
               <p>
-                <strong>Début :</strong>{" "}
+                <strong>Start:</strong>{" "}
                 {new Date(exam.start_at).toLocaleString()}
               </p>
 
               <p>
-                <strong>Fin :</strong>{" "}
+                <strong>End:</strong>{" "}
                 {new Date(exam.end_at).toLocaleString()}
               </p>
 
               <Link to={`/student/exams/${exam.id}/take`}>
-                Commencer l'examen
+                Start Exam
               </Link>
             </div>
           ))}

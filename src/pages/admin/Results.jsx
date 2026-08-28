@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router-dom";
 function Results() {
   const { id } = useParams();
 
-  // Données fictives
+  // Mock data
   const results = [
     { id: 1, student: "Jean", score: 16, total: 20, attempts: 1 },
     { id: 2, student: "Paul", score: 12, total: 20, attempts: 1 },
@@ -22,21 +22,21 @@ function Results() {
 
   return (
     <div className="admin-page">
-      <Link to="/admin/exams">← Retour aux examens</Link>
+      <Link to="/admin/exams">← Back to exams</Link>
 
       <div className="page-header" style={{ marginTop: "15px" }}>
         <div>
-          <h1>Résultats de l'examen #{id}</h1>
-          <p>Consulter les notes des étudiants.</p>
+          <h1>Results for Exam #{id}</h1>
+          <p>View student grades and performance.</p>
         </div>
       </div>
 
       <div className="form-card">
         <p>
-          <strong>Moyenne :</strong> {average}/20
+          <strong>Average:</strong> {average}/20
         </p>
         <p>
-          <strong>Nombre de tentatives :</strong> {totalAttempts}
+          <strong>Total Attempts:</strong> {totalAttempts}
         </p>
       </div>
 
@@ -44,9 +44,9 @@ function Results() {
         <table>
           <thead>
             <tr>
-              <th>Étudiant</th>
-              <th>Note</th>
-              <th>Tentatives</th>
+              <th>Student</th>
+              <th>Score</th>
+              <th>Attempts</th>
             </tr>
           </thead>
 
@@ -64,7 +64,7 @@ function Results() {
         </table>
 
         {results.length === 0 && (
-          <p className="empty-message">Aucun résultat pour cet examen.</p>
+          <p className="empty-message">No results for this exam.</p>
         )}
       </div>
     </div>

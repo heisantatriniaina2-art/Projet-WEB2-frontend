@@ -5,14 +5,14 @@ function Courses() {
     {
       id: 1,
       code: "PROG2",
-      name: "Programmation 2",
-      description: "Cours de programmation avancée.",
+      name: "Programming 2",
+      description: "Advanced programming course.",
     },
     {
       id: 2,
       code: "WEB2",
-      name: "Développement Web",
-      description: "Création d'applications web.",
+      name: "Web Development",
+      description: "Web application development.",
     },
   ]);
 
@@ -28,7 +28,7 @@ function Courses() {
     e.preventDefault();
 
     if (!code || !name || !description) {
-      alert("Veuillez remplir tous les champs.");
+      alert("Please fill in all fields.");
       return;
     }
 
@@ -37,7 +37,7 @@ function Courses() {
     );
 
     if (codeExists) {
-      alert("Ce code de cours existe déjà.");
+      alert("This course code already exists.");
       return;
     }
 
@@ -70,7 +70,7 @@ function Courses() {
     e.preventDefault();
 
     if (!code || !name || !description) {
-      alert("Veuillez remplir tous les champs.");
+      alert("Please fill in all fields.");
       return;
     }
 
@@ -81,7 +81,7 @@ function Courses() {
     );
 
     if (codeExists) {
-      alert("Ce code de cours existe déjà.");
+      alert("This course code already exists.");
       return;
     }
 
@@ -107,7 +107,7 @@ function Courses() {
 
   const handleDelete = (id) => {
     const confirmation = window.confirm(
-      "Voulez-vous vraiment supprimer ce cours ?"
+      "Are you sure you want to delete this course?"
     );
 
     if (!confirmation) {
@@ -130,8 +130,8 @@ function Courses() {
     <div className="admin-page">
       <div className="page-header">
         <div>
-          <h1>Gestion des cours</h1>
-          <p>Créer et gérer les cours de l'école.</p>
+          <h1>Course Management</h1>
+          <p>Create and manage school courses.</p>
         </div>
 
         <button
@@ -144,34 +144,34 @@ function Courses() {
             setShowForm(true);
           }}
         >
-          + Ajouter un cours
+          + Add Course
         </button>
       </div>
 
       {showForm && (
         <div className="form-card">
           <h2>
-            {editingCourse ? "Modifier un cours" : "Ajouter un cours"}
+            {editingCourse ? "Edit Course" : "Add Course"}
           </h2>
 
           <form onSubmit={editingCourse ? handleUpdate : handleAdd}>
             <div className="form-group">
-              <label>Code du cours</label>
+              <label>Course Code</label>
               <input
                 type="text"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                placeholder="Exemple : PROG2"
+                placeholder="Example: PROG2"
               />
             </div>
 
             <div className="form-group">
-              <label>Nom du cours</label>
+              <label>Course Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Exemple : Programmation 2"
+                placeholder="Example: Programming 2"
               />
             </div>
 
@@ -180,7 +180,7 @@ function Courses() {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description du cours"
+                placeholder="Course description"
                 rows="4"
               />
             </div>
@@ -188,8 +188,8 @@ function Courses() {
             <div className="form-actions">
               <button type="submit" className="primary-button">
                 {editingCourse
-                  ? "Enregistrer les modifications"
-                  : "Créer le cours"}
+                  ? "Save Changes"
+                  : "Create Course"}
               </button>
 
               <button
@@ -197,7 +197,7 @@ function Courses() {
                 className="secondary-button"
                 onClick={handleCancel}
               >
-                Annuler
+                Cancel
               </button>
             </div>
           </form>
@@ -209,7 +209,7 @@ function Courses() {
           <thead>
             <tr>
               <th>Code</th>
-              <th>Nom</th>
+              <th>Name</th>
               <th>Description</th>
               <th>Actions</th>
             </tr>
@@ -227,14 +227,14 @@ function Courses() {
                       className="action-button"
                       onClick={() => handleEdit(course)}
                     >
-                      Modifier
+                      Edit
                     </button>
 
                     <button
                       className="action-button danger"
                       onClick={() => handleDelete(course.id)}
                     >
-                      Supprimer
+                      Delete
                     </button>
                   </div>
                 </td>
@@ -244,7 +244,7 @@ function Courses() {
         </table>
 
         {courses.length === 0 && (
-          <p className="empty-message">Aucun cours enregistré.</p>
+          <p className="empty-message">No courses registered.</p>
         )}
       </div>
     </div>

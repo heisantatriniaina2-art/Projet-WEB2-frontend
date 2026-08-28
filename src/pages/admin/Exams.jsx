@@ -7,25 +7,25 @@ function Exams() {
   const [exams, setExams] = useState([
     {
       id: 1,
-      title: "Examen final",
+      title: "Final Exam",
       courseCode: "PROG2",
-      description: "Évaluation portant sur les chapitres 1 à 5.",
+      description: "Assessment covering chapters 1 to 5.",
       startDate: "2026-08-30T09:00",
       endDate: "2026-08-30T11:00",
     },
     {
       id: 2,
-      title: "Contrôle continu",
+      title: "Continuous Assessment",
       courseCode: "WEB2",
-      description: "Évaluation sur le développement web.",
+      description: "Assessment on web development.",
       startDate: "2026-09-02T10:00",
       endDate: "2026-09-02T12:00",
     },
   ]);
 
   const courses = [
-    { code: "PROG2", name: "Programmation 2" },
-    { code: "WEB2", name: "Développement Web" },
+    { code: "PROG2", name: "Programming 2" },
+    { code: "WEB2", name: "Web Development" },
   ];
 
   const [showForm, setShowForm] = useState(false);
@@ -42,12 +42,12 @@ function Exams() {
     e.preventDefault();
 
     if (!title || !courseCode || !description || !startDate || !endDate) {
-      alert("Veuillez remplir tous les champs.");
+      alert("Please fill in all fields.");
       return;
     }
 
     if (new Date(endDate) <= new Date(startDate)) {
-      alert("La date de fin doit être après la date de début.");
+      alert("End date must be after the start date.");
       return;
     }
 
@@ -86,12 +86,12 @@ function Exams() {
     e.preventDefault();
 
     if (!title || !courseCode || !description || !startDate || !endDate) {
-      alert("Veuillez remplir tous les champs.");
+      alert("Please fill in all fields.");
       return;
     }
 
     if (new Date(endDate) <= new Date(startDate)) {
-      alert("La date de fin doit être après la date de début.");
+      alert("End date must be after the start date.");
       return;
     }
 
@@ -121,7 +121,7 @@ function Exams() {
 
   const handleDelete = (id) => {
     const confirmation = window.confirm(
-      "Voulez-vous vraiment supprimer cet examen ?"
+      "Are you sure you want to delete this exam?"
     );
 
     if (!confirmation) {
@@ -145,7 +145,7 @@ function Exams() {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleString("fr-FR", {
+    return date.toLocaleString("en-US", {
       day: "2-digit",
       month: "2-digit",
       hour: "2-digit",
@@ -157,8 +157,8 @@ function Exams() {
     <div className="admin-page">
       <div className="page-header">
         <div>
-          <h1>Gestion des examens</h1>
-          <p>Créer et gérer les examens liés aux cours.</p>
+          <h1>Exam Management</h1>
+          <p>Create and manage exams associated with courses.</p>
         </div>
 
         <button
@@ -173,36 +173,36 @@ function Exams() {
             setShowForm(true);
           }}
         >
-          + Ajouter un examen
+          + Add Exam
         </button>
       </div>
 
       {showForm && (
         <div className="form-card">
           <h2>
-            {editingExam ? "Modifier un examen" : "Ajouter un examen"}
+            {editingExam ? "Edit Exam" : "Add Exam"}
           </h2>
 
           <form onSubmit={editingExam ? handleUpdate : handleAdd}>
             <div className="form-group">
-              <label>Titre</label>
+              <label>Title</label>
 
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Exemple : Examen final"
+                placeholder="Example: Final Exam"
               />
             </div>
 
             <div className="form-group">
-              <label>Cours</label>
+              <label>Course</label>
 
               <select
                 value={courseCode}
                 onChange={(e) => setCourseCode(e.target.value)}
               >
-                <option value="">-- Sélectionner un cours --</option>
+                <option value="">-- Select a course --</option>
                 {courses.map((course) => (
                   <option key={course.code} value={course.code}>
                     {course.code} - {course.name}
@@ -217,13 +217,13 @@ function Exams() {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description de l'examen"
+                placeholder="Exam description"
                 rows="4"
               />
             </div>
 
             <div className="form-group">
-              <label>Début</label>
+              <label>Start</label>
 
               <input
                 type="datetime-local"
@@ -233,7 +233,7 @@ function Exams() {
             </div>
 
             <div className="form-group">
-              <label>Fin</label>
+              <label>End</label>
 
               <input
                 type="datetime-local"
@@ -245,8 +245,8 @@ function Exams() {
             <div className="form-actions">
               <button type="submit" className="primary-button">
                 {editingExam
-                  ? "Enregistrer les modifications"
-                  : "Créer l'examen"}
+                  ? "Save Changes"
+                  : "Create Exam"}
               </button>
 
               <button
@@ -254,7 +254,7 @@ function Exams() {
                 className="secondary-button"
                 onClick={handleCancel}
               >
-                Annuler
+                Cancel
               </button>
             </div>
           </form>
@@ -265,10 +265,10 @@ function Exams() {
         <table>
           <thead>
             <tr>
-              <th>Titre</th>
-              <th>Cours</th>
-              <th>Début</th>
-              <th>Fin</th>
+              <th>Title</th>
+              <th>Course</th>
+              <th>Start</th>
+              <th>End</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -290,14 +290,14 @@ function Exams() {
                       className="action-button"
                       onClick={() => handleEdit(exam)}
                     >
-                      Modifier
+                      Edit
                     </button>
 
                     <button
                       className="action-button danger"
                       onClick={() => handleDelete(exam.id)}
                     >
-                      Supprimer
+                      Delete
                     </button>
 
                     <button
@@ -315,7 +315,7 @@ function Exams() {
                         navigate(`/admin/exams/${exam.id}/results`)
                       }
                     >
-                      Résultats
+                      Results
                     </button>
                   </div>
                 </td>
@@ -325,7 +325,7 @@ function Exams() {
         </table>
 
         {exams.length === 0 && (
-          <p className="empty-message">Aucun examen enregistré.</p>
+          <p className="empty-message">No exams recorded.</p>
         )}
       </div>
     </div>

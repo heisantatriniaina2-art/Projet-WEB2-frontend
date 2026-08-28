@@ -15,118 +15,118 @@ import StudentResults from './pages/student/Results.jsx';
 import Login from './pages/Login.jsx';
 
 function Layout({ links, title, children }) {
-    return (
-        <div className="layout">
-            <header className="header">
-                <div className="header-container">
-                    <h2 className="header-title">{title}</h2>
-                    <nav className="navbar">
-                        {links.map((l) => (
-                            <NavLink key={l.to} to={l.to} end={l.end}>
-                                {l.label}
-                            </NavLink>
-                        ))}
-                    </nav>
-                </div>
-            </header>
-            <main className="content">{children}</main>
+  return (
+    <div className="layout">
+      <header className="header">
+        <div className="header-container">
+          <h2 className="header-title">{title}</h2>
+          <nav className="navbar">
+            {links.map((link) => (
+              <NavLink key={link.to} to={link.to} end={link.end}>
+                {link.label}
+              </NavLink>
+            ))}
+          </nav>
         </div>
-    );
+      </header>
+      <main className="content">{children}</main>
+    </div>
+  );
 }
 
 const adminLinks = [
-    { to: '/admin', label: 'Tableau de bord', end: true },
-    { to: '/admin/students', label: 'Étudiants' },
-    { to: '/admin/courses', label: 'Cours' },
-    { to: '/admin/exams', label: 'Examens' },
+  { to: '/admin', label: 'Dashboard', end: true },
+  { to: '/admin/students', label: 'Students' },
+  { to: '/admin/courses', label: 'Courses' },
+  { to: '/admin/exams', label: 'Exams' },
 ];
 
 const studentLinks = [
-    { to: '/student', label: 'Tableau de bord', end: true },
-    { to: '/student/exams', label: 'Mes Examens' },
-    { to: '/student/results', label: 'Mes Résultats' },
+  { to: '/student', label: 'Dashboard', end: true },
+  { to: '/student/exams', label: 'My Exams' },
+  { to: '/student/results', label: 'My Results' },
 ];
 
 export default function App() {
-    return (
-        <Routes>
-            <Route path="/login" element={<Login />} />
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
 
-            <Route
-                path="/admin"
-                element={
-                    <Layout links={adminLinks} title="Examens - Admin">
-                        <AdminDashboard />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/admin/students"
-                element={
-                    <Layout links={adminLinks} title="Examens - Admin">
-                        <AdminStudents />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/admin/courses"
-                element={
-                    <Layout links={adminLinks} title="Examens - Admin">
-                        <AdminCourses />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/admin/exams"
-                element={
-                    <Layout links={adminLinks} title="Examens - Admin">
-                        <AdminExams />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/admin/exams/:id/questions"
-                element={
-                    <Layout links={adminLinks} title="Examens - Admin">
-                        <AdminQuestions />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/admin/exams/:id/results"
-                element={
-                    <Layout links={adminLinks} title="Examens - Admin">
-                        <AdminResults />
-                    </Layout>
-                }
-            />
+      <Route
+        path="/admin"
+        element={
+          <Layout links={adminLinks} title="Exams - Admin">
+            <AdminDashboard />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin/students"
+        element={
+          <Layout links={adminLinks} title="Exams - Admin">
+            <AdminStudents />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin/courses"
+        element={
+          <Layout links={adminLinks} title="Exams - Admin">
+            <AdminCourses />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin/exams"
+        element={
+          <Layout links={adminLinks} title="Exams - Admin">
+            <AdminExams />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin/exams/:id/questions"
+        element={
+          <Layout links={adminLinks} title="Exams - Admin">
+            <AdminQuestions />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin/exams/:id/results"
+        element={
+          <Layout links={adminLinks} title="Exams - Admin">
+            <AdminResults />
+          </Layout>
+        }
+      />
 
-            <Route
-                path="/student"
-                element={
-                    <Layout links={studentLinks} title="Espace Étudiant">
-                        <StudentDashboard />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/student/exams"
-                element={
-                    <Layout links={studentLinks} title="Espace Étudiant">
-                        <StudentExams />
-                    </Layout>
-                }
-            />
-            <Route
-                path="/student/results"
-                element={
-                    <Layout links={studentLinks} title="Espace Étudiant">
-                        <StudentResults />
-                    </Layout>
-                }
-            />
+      <Route
+        path="/student"
+        element={
+          <Layout links={studentLinks} title="Student Portal">
+            <StudentDashboard />
+          </Layout>
+        }
+      />
+      <Route
+        path="/student/exams"
+        element={
+          <Layout links={studentLinks} title="Student Portal">
+            <StudentExams />
+          </Layout>
+        }
+      />
+      <Route
+        path="/student/results"
+        element={
+          <Layout links={studentLinks} title="Student Portal">
+            <StudentResults />
+          </Layout>
+        }
+      />
 
-            <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-    );
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
+  );
 }

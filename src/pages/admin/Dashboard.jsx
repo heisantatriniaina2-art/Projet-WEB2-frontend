@@ -25,22 +25,22 @@ export default function Dashboard() {
     <div className="admin-page">
       <div className="page-header">
         <div>
-          <h1>Tableau de bord</h1>
-          <p>Vue d'ensemble de la plateforme.</p>
+          <h1>Dashboard</h1>
+          <p>Platform overview.</p>
         </div>
       </div>
 
       <div className="card-grid">
         <div className="card">
-          <Link to="/admin/students">Étudiants</Link>
+          <Link to="/admin/students">Students</Link>
           <h3>{stats.students}</h3>
         </div>
         <div className="card">
-          <Link to="/admin/courses">Cours</Link>
+          <Link to="/admin/courses">Courses</Link>
           <h3>{stats.courses}</h3>
         </div>
         <div className="card">
-          <Link to="/admin/exams">Examens</Link>
+          <Link to="/admin/exams">Exams</Link>
           <h3>{stats.exams}</h3>
         </div>
       </div>
