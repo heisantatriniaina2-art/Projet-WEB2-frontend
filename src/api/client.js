@@ -25,7 +25,7 @@ export async function apiFetch(endpoint, options = {}) {
 
     if (!response.ok) {
         throw new Error(
-            data?.message || "Une erreur est survenue."
+            data?.message || "An error occurred."
         );
     }
 

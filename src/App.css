@@ -8,7 +8,7 @@
   --bg-color: #f8fafc;
   --card-bg: #ffffff;
   --text-main: #0f172a;
-  --text-muted: #64748b;
+  --text-muted: white;
   --border-color: #e2e8f0;
   --radius: 8px;
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -148,7 +148,10 @@ body {
   font-size: 0.95rem;
 }
 
-button, .primary-button, .secondary-button, .action-button {
+button,
+.primary-button,
+.secondary-button,
+.action-button {
   cursor: pointer;
   border: none;
   border-radius: var(--radius);
@@ -200,7 +203,7 @@ button, .primary-button, .secondary-button, .action-button {
 }
 
 .action-button.danger:hover {
-  background-color: var(--danger-color);
+  background-color: red;
   color: white;
 }
 
@@ -304,7 +307,8 @@ table {
   text-align: left;
 }
 
-th, td {
+th,
+td {
   padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--border-color);
   font-size: 0.9rem;

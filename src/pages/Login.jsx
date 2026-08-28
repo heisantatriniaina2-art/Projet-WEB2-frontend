@@ -71,11 +71,6 @@ function Login() {
           {error && (
             <p
               className="error-message"
-              style={{
-                color: "#ef4444",
-                fontSize: "14px",
-                marginBottom: "15px",
-              }}
             >
               {error}
             </p>

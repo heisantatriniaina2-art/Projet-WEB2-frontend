@@ -42,7 +42,7 @@ export default function Exams() {
     <div className="student-exams">
       <header className="dashboard-header">
         <div className="logo">
-          <h1>Exam Hub</h1>
+          <h1>ExamHub</h1>
         </div>
 
         <nav className="navbar">

@@ -42,32 +42,23 @@ export default function Results() {
         </div>
       </div>
 
-      <div className="card" style={{ maxWidth: "600px", margin: "0 auto" }}>
-        <h2 style={{ color: "#4f46e5", marginBottom: "1rem" }}>
+      <div className="card">
+        <h2 >
           {result.exam_title || "Exam Completed"}
         </h2>
 
         <div
-          style={{
-            background: "#f3f4f6",
-            padding: "1.5rem",
-            borderRadius: "8px",
-            marginBottom: "1.5rem",
-            textAlign: "center",
-          }}
         >
-          <span
-            style={{ display: "block", color: "#6b7280", fontSize: "0.9rem" }}
-          >
+          <span>
             Score Obtained
           </span>
-          <strong style={{ fontSize: "2.5rem", color: "#111827" }}>
+          <strong>
             {result.score ?? 0}
           </strong>
         </div>
 
         {result.total_points !== undefined && (
-          <p style={{ marginBottom: "0.5rem" }}>
+          <p>
             Total Points: <strong>{result.total_points} point(s)</strong>
           </p>
         )}
@@ -79,7 +70,7 @@ export default function Results() {
         )}
 
         <Link to="/student/exams">
-          <button className="secondary-button" style={{ width: "100%" }}>
+          <button className="secondary-button">
             Back to Exams
           </button>
         </Link>
