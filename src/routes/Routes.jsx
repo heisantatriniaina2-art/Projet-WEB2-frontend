@@ -9,13 +9,6 @@ import StudentExams from "../pages/student/Exams";
 import ExamTake from "../pages/student/ExamTake";
 import StudentResults from "../pages/student/Results";
 
-// Admin
-import AdminDashboard from "../pages/admin/Dashboard";
-import Students from "../pages/admin/Students";
-import Courses from "../pages/admin/Courses";
-import AdminExams from "../pages/admin/Exams";
-import Questions from "../pages/admin/Questions";
-
 export default function AppRoutes() {
     return (
         <Routes>
@@ -52,33 +45,6 @@ export default function AppRoutes() {
             <Route
                 path="/student/results"
                 element={<StudentResults />}
-            />
-
-            {/* ================= ADMIN ================= */}
-
-            <Route
-                path="/admin"
-                element={<AdminDashboard />}
-            />
-
-            <Route
-                path="/admin/students"
-                element={<Students />}
-            />
-
-            <Route
-                path="/admin/courses"
-                element={<Courses />}
-            />
-
-            <Route
-                path="/admin/exams"
-                element={<AdminExams />}
-            />
-
-            <Route
-                path="/admin/exams/:id/questions"
-                element={<Questions />}
             />
 
         </Routes>
