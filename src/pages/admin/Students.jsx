@@ -1,208 +1,288 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { getStudents } from "../../api/students";
-import "../../App.css";
+import React, { useState } from "react";
 
-export default function StudentsManagement() {
-  const navigate = useNavigate();
-  const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
+function Students() {
+  const [students, setStudents] = useState([
+    {
+      id: 1,
+      name: "Jean",
+      email: "jean@gmail.com",
+      active: true,
+    },
+    {
+      id: 2,
+      name: "Paul",
+      email: "paul@gmail.com",
+      active: false,
+    },
+  ]);
 
-  // États pour le formulaire de création
+  const [showForm, setShowForm] = useState(false);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
-  useEffect(() => {
-    fetchStudents();
-  }, []);
+  const [editingStudent, setEditingStudent] = useState(null);
 
-  const fetchStudents = () => {
-    setLoading(true);
-    getStudents()
-      .then((data) => {
-        setStudents(data || []);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Erreur chargement étudiants", err);
-        setLoading(false);
-      });
-  };
-
-  // Gérer la création d'un étudiant
-  const handleCreateStudent = (e) => {
+  const handleAdd = (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
 
-    fetch("http://localhost:3000/api/students", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-      },
-      body: JSON.stringify({ name, email, password })
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const errData = await res.json();
-          throw new Error(errData.message || "Erreur lors de la création de l'étudiant");
+    if (!name || !email || !password) {
+      alert("Veuillez remplir tous les champs.");
+      return;
+    }
+
+    const newStudent = {
+      id: Date.now(),
+      name: name,
+      email: email,
+      active: true,
+    };
+
+    setStudents([...students, newStudent]);
+
+    setName("");
+    setEmail("");
+    setPassword("");
+    setShowForm(false);
+  };
+
+
+  const handleEdit = (student) => {
+    setEditingStudent(student);
+    setName(student.name);
+    setEmail(student.email);
+    setPassword("");
+    setShowForm(true);
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+
+    if (!name || !email) {
+      alert("Veuillez remplir le nom et l'email.");
+      return;
+    }
+
+    const updatedStudents = students.map((student) =>
+      student.id === editingStudent.id
+        ? {
+          ...student,
+          name: name,
+          email: email,
         }
-        return res.json();
-      })
-      .then(() => {
-        setSuccess("Étudiant créé avec succès !");
-        setName("");
-        setEmail("");
-        setPassword("");
-        fetchStudents();
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+        : student
+    );
+
+    setStudents(updatedStudents);
+
+    setEditingStudent(null);
+    setName("");
+    setEmail("");
+    setPassword("");
+    setShowForm(false);
   };
 
-  // Gérer la désactivation / activation d'un étudiant
-  const handleToggleStatus = (id, currentStatus) => {
-    const action = currentStatus ? "désactiver" : "activer";
-    if (!window.confirm(`Voulez-vous vraiment ${action} cet étudiant ?`)) return;
+  const handleToggleActive = (id) => {
+    const updatedStudents = students.map((student) =>
+      student.id === id
+        ? {
+          ...student,
+          active: !student.active,
+        }
+        : student
+    );
 
-    fetch(`http://localhost:3000/api/students/${id}/status`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-      },
-      body: JSON.stringify({ active: !currentStatus })
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Erreur lors de la modification du statut");
-        fetchStudents();
-      })
-      .catch((err) => alert(err.message));
+    setStudents(updatedStudents);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login");
+  const handleResetPassword = (student) => {
+    alert(
+      `Le mot de passe de ${student.name} sera réinitialisé.`
+    );
+  };
+
+  const handleCancel = () => {
+    setShowForm(false);
+    setEditingStudent(null);
+    setName("");
+    setEmail("");
+    setPassword("");
   };
 
   return (
-    <div className="dashboard">
-      {/* En-tête admin */}
-      <header className="dashboard-header">
-        <div className="logo">
-          <h1>Exam Hub <span className="admin-badge-tag">Admin</span></h1>
+    <div className="admin-page">
+
+      <div className="page-header">
+        <div>
+          <h1>Gestion des étudiants</h1>
+          <p>Créer et gérer les comptes étudiants.</p>
         </div>
 
-        <nav className="navbar">
-          <Link to="/admin">Tableau de bord</Link>
-          <Link to="/admin/students" className="active">Étudiants</Link>
-          <Link to="/admin/courses">Cours</Link>
-          <Link to="/admin/exams">Examens</Link>
-        </nav>
+        <button
+          className="primary-button"
+          onClick={() => {
+            setEditingStudent(null);
+            setName("");
+            setEmail("");
+            setPassword("");
+            setShowForm(true);
+          }}
+        >
+          + Ajouter un étudiant
+        </button>
+      </div>
 
-        <div className="header-right">
-          <button onClick={handleLogout} className="logout-button">Déconnexion</button>
-        </div>
-      </header>
-
-      <main className="dashboard-content">
-        <div className="section-header">
-          <h2>Gestion des étudiants 👥</h2>
-          <p>Créez les accès des étudiants et gérez leur statut sur la plateforme.</p>
-        </div>
-
-        {/* Formulaire de création */}
+      {showForm && (
         <div className="form-card">
-          <h3>Créer un étudiant</h3>
-          {error && <div className="alert error">{error}</div>}
-          {success && <div className="alert success">{success}</div>}
+          <h2>
+            {editingStudent
+              ? "Modifier un étudiant"
+              : "Ajouter un étudiant"}
+          </h2>
 
-          <form onSubmit={handleCreateStudent} className="inline-form">
+          <form
+            onSubmit={
+              editingStudent ? handleUpdate : handleAdd
+            }
+          >
             <div className="form-group">
               <label>Nom</label>
+
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Nom de l'étudiant"
-                required
               />
             </div>
 
             <div className="form-group">
               <label>Email</label>
+
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="email@exemple.com"
-                required
+                placeholder="email@example.com"
               />
             </div>
 
-            <div className="form-group full-width">
-              <label>Mot de passe initial</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Mot de passe initial"
-                required
-              />
-            </div>
+            {!editingStudent && (
+              <div className="form-group">
+                <label>Mot de passe initial</label>
 
-            <button type="submit" className="btn-primary">Créer</button>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Mot de passe"
+                />
+              </div>
+            )}
+
+            <div className="form-actions">
+              <button
+                type="submit"
+                className="primary-button"
+              >
+                {editingStudent
+                  ? "Enregistrer les modifications"
+                  : "Créer l'étudiant"}
+              </button>
+
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={handleCancel}
+              >
+                Annuler
+              </button>
+            </div>
           </form>
         </div>
+      )}
 
-        {/* Liste des étudiants */}
-        <div className="table-container">
-          <h3>Liste des étudiants</h3>
-          {loading ? (
-            <p className="loading-text">Chargement des étudiants...</p>
-          ) : students.length === 0 ? (
-            <p className="empty-text">Aucun étudiant disponible.</p>
-          ) : (
-            <table className="styled-table">
-              <thead>
-                <tr>
-                  <th>Nom</th>
-                  <th>Email</th>
-                  <th>Statut</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {students.map((student) => (
-                  <tr key={student.id}>
-                    <td><strong>{student.name}</strong></td>
-                    <td>{student.email}</td>
-                    <td>
-                      <span className={`badge-status ${student.active !== false ? "active" : "disabled"}`}>
-                        {student.active !== false ? "Actif" : "Désactivé"}
-                      </span>
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => handleToggleStatus(student.id, student.active !== false)}
-                        className={`btn-action ${student.active !== false ? "btn-danger" : "btn-success"}`}
-                      >
-                        {student.active !== false ? "Désactiver" : "Activer"}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      </main>
+      <div className="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {students.map((student) => (
+              <tr key={student.id}>
+                <td>{student.name}</td>
+
+                <td>{student.email}</td>
+
+                <td>
+                  {student.active ? (
+                    <span className="status active">
+                      Actif
+                    </span>
+                  ) : (
+                    <span className="status inactive">
+                      Désactivé
+                    </span>
+                  )}
+                </td>
+
+                <td>
+                  <div className="actions">
+
+                    <button
+                      className="action-button"
+                      onClick={() => handleEdit(student)}
+                    >
+                      Modifier
+                    </button>
+
+                    <button
+                      className="action-button"
+                      onClick={() =>
+                        handleResetPassword(student)
+                      }
+                    >
+                      Réinitialiser
+                    </button>
+
+                    <button
+                      className={
+                        student.active
+                          ? "action-button danger"
+                          : "action-button success"
+                      }
+                      onClick={() =>
+                        handleToggleActive(student.id)
+                      }
+                    >
+                      {student.active
+                        ? "Désactiver"
+                        : "Activer"}
+                    </button>
+
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {students.length === 0 && (
+          <p className="empty-message">
+            Aucun étudiant enregistré.
+          </p>
+        )}
+      </div>
+
     </div>
   );
 }
+
+export default Students;

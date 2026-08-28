@@ -10,7 +10,6 @@ export default function ExamsManagement() {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // États pour le formulaire de création d'un examen
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [courseId, setCourseId] = useState("");
@@ -41,7 +40,6 @@ export default function ExamsManagement() {
             });
     };
 
-    // Gérer la création de l'examen
     const handleCreateExam = (e) => {
         e.preventDefault();
         setError("");
@@ -90,19 +88,16 @@ export default function ExamsManagement() {
 
     return (
         <div className="dashboard">
-            {/* En-tête admin */}
             <header className="dashboard-header">
                 <div className="logo">
                     <h1>Exam Hub <span className="admin-badge-tag">Admin</span></h1>
                 </div>
-
                 <nav className="navbar">
                     <Link to="/admin">Tableau de bord</Link>
                     <Link to="/admin/students">Étudiants</Link>
                     <Link to="/admin/courses">Cours</Link>
                     <Link to="/admin/exams" className="active">Examens</Link>
                 </nav>
-
                 <div className="header-right">
                     <button onClick={handleLogout} className="logout-button">Déconnexion</button>
                 </div>
@@ -114,7 +109,6 @@ export default function ExamsManagement() {
                     <p>Planifiez les examens, définissez leur durée de disponibilité et rattachez-les aux cours.</p>
                 </div>
 
-                {/* Formulaire de création d'un examen */}
                 <div className="form-card">
                     <h3>Créer un nouvel examen</h3>
                     {error && <div className="alert error">{error}</div>}
@@ -184,7 +178,6 @@ export default function ExamsManagement() {
                     </form>
                 </div>
 
-                {/* Tableau de la liste des examens */}
                 <div className="table-container">
                     <h3>Liste des examens planifiés</h3>
                     {loading ? (

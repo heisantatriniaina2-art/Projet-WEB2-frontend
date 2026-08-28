@@ -41,46 +41,47 @@ function Login() {
     };
 
     return (
-        <div>
+        <div className="login-page">
             <h1>Exam Hub</h1>
             <h2>Connexion</h2>
 
-            <form onSubmit={handleSubmit}>
+            <div className="form-card">
+                <form onSubmit={handleSubmit}>
 
-                <div>
-                    <label>Email</label>
+                    <div className="form-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Votre email"
+                            required
+                        />
+                    </div>
 
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Votre email"
-                        required
-                    />
-                </div>
+                    <div className="form-group">
+                        <label>Mot de passe</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Votre mot de passe"
+                            required
+                        />
+                    </div>
 
-                <div>
-                    <label>Mot de passe</label>
+                    {error && <p className="error-message" style={{ color: "#ef4444", fontSize: "14px", marginBottom: "15px" }}>{error}</p>}
 
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Votre mot de passe"
-                        required
-                    />
-                </div>
+                    <button
+                        type="submit"
+                        className="primary-button"
+                        disabled={loading}
+                    >
+                        {loading ? "Connexion..." : "Se connecter"}
+                    </button>
 
-                {error && <p>{error}</p>}
-
-                <button
-                    type="submit"
-                    disabled={loading}
-                >
-                    {loading ? "Connexion..." : "Se connecter"}
-                </button>
-
-            </form>
+                </form>
+            </div>
         </div>
     );
 }

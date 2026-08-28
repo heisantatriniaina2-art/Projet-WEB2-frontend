@@ -14,36 +14,11 @@ body {
 }
 
 
-/* =========================
-   DASHBOARD
-========================= */
-
 .dashboard {
   min-height: 100vh;
   background-color: #f5f7fb;
 }
 
-
-/* =========================
-   HEADER
-========================= */
-
-.dashboard-header {
-  height: 75px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 50px;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.logo h1 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #2563eb;
-}
 
 
 /* =========================
@@ -1344,4 +1319,114 @@ div[style*="display: flex"] {
 
 .btn-secondary-action:hover {
   background-color: #dbeafe;
+}
+
+
+
+
+
+/*login */
+
+/* Conteneur global de la page de connexion */
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Titre principal "Exam Hub" */
+.login-page h1 {
+  font-size: 32px;
+  color: #2563eb;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+/* Sous-titre "Connexion" */
+.login-page h2 {
+  font-size: 18px;
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+/* Carte blanche centrale */
+.login-page .form-card {
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+}
+
+/* Groupes de champs (Label + Input) */
+.login-page .form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.login-page .form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+/* Champs de texte / email / mot de passe */
+.login-page .form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #0f172a;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.login-page .form-group input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Bouton principal de soumission */
+.login-page .primary-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 10px;
+}
+
+.login-page .primary-button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.login-page .primary-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.login-page .primary-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }

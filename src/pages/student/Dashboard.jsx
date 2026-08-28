@@ -4,7 +4,7 @@ import "../../App.css";
 
 function Dashboard() {
     const navigate = useNavigate();
-    const [user, setUser] = useState({ name: "Jean Dupont", role: "Étudiante" });
+    const [user, setUser] = useState({ name: "", role: "Étudiante" });
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -12,7 +12,7 @@ function Dashboard() {
             try {
                 const parsed = JSON.parse(storedUser);
                 setUser({
-                    name: parsed.name || parsed.email || "Jean Dupont",
+                    name: parsed.name || parsed.email || "",
                     role: parsed.role === "admin" ? "Administrateur" : "Étudiante"
                 });
             } catch (e) {
@@ -30,12 +30,12 @@ function Dashboard() {
     return (
         <div className="dashboard">
             <header className="dashboard-header">
-                {/* 1. LOGO À GAUCHE */}
+                { }
                 <div className="logo">
                     <h1>Exam Hub</h1>
                 </div>
 
-                {/* 2. NAVBAR AU CENTRE */}
+                { }
                 <nav className="navbar">
                     <Link to="/student" className="active">
                         Tableau de bord
@@ -48,16 +48,18 @@ function Dashboard() {
                     </Link>
                 </nav>
 
-                {/* 3. PROFIL + DÉCO CONNEXION À DROITE */}
+                { }
                 <div className="header-right">
-                    <div className="user-profile-header">
-                        <div className="user-profile-info">
-                            <h3>{user.name}</h3>
+                    {user.name && (
+                        <div className="user-profile-header">
+                            <div className="user-profile-info">
+                                <h3>{user.name}</h3>
+                            </div>
+                            <div className="user-avatar">
+                                {user.name.charAt(0).toUpperCase()}
+                            </div>
                         </div>
-                        <div className="user-avatar">
-                            {user.name.charAt(0).toUpperCase()}
-                        </div>
-                    </div>
+                    )}
 
                     <button onClick={handleLogout} className="logout-button">
                         Déconnexion
@@ -67,7 +69,7 @@ function Dashboard() {
 
             <main className="dashboard-content">
                 <section className="welcome-section">
-                    <h2>Bienvenue sur Exam Hub 👋</h2>
+                    <h2>Bienvenue👋</h2>
                     <p>
                         Retrouvez vos examens, passez vos QCM
                         et consultez vos résultats.

@@ -1,177 +1,305 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { getCourses } from "../../api/courses"; // Vérifie que ton API existe
-import "../../App.css";
+import React, { useState } from "react";
 
-export default function CoursesManagement() {
-  const navigate = useNavigate();
-  const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
+function Courses() {
+  const [courses, setCourses] = useState([
+    {
+      id: 1,
+      code: "PROG2",
+      name: "Programmation 2",
+      description: "Cours de programmation avancée.",
+    },
+    {
+      id: 2,
+      code: "WEB2",
+      name: "Développement Web",
+      description: "Création d'applications web.",
+    },
+  ]);
 
-  // États pour le formulaire d'ajout d'un cours
+  const [showForm, setShowForm] = useState(false);
+
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
-  // Charger les cours au montage de la page
-  useEffect(() => {
-    fetchCourses();
-  }, []);
+  const [editingCourse, setEditingCourse] = useState(null);
 
-  const fetchCourses = () => {
-    setLoading(true);
-    getCourses()
-      .then((data) => {
-        setCourses(data || []);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Erreur lors du chargement des cours", err);
-        setLoading(false);
-      });
-  };
 
-  // Fonction pour gérer la création d'un cours
-  const handleCreateCourse = (e) => {
+  const handleAdd = (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
 
-    // Appel à ton API de création (adapte selon ton fichier api/courses.js)
-    fetch("http://localhost:3000/api/courses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-      },
-      body: JSON.stringify({ code, name, description })
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const errData = await res.json();
-          throw new Error(errData.message || "Erreur lors de la création du cours");
-        }
-        return res.json();
-      })
-      .then(() => {
-        setSuccess("Cours créé avec succès !");
-        setCode("");
-        setName("");
-        setDescription("");
-        fetchCourses(); // Recharger la liste
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+    if (!code || !name || !description) {
+      alert("Veuillez remplir tous les champs.");
+      return;
+    }
+
+    const codeExists = courses.some(
+      (course) =>
+        course.code.toLowerCase() === code.toLowerCase()
+    );
+
+    if (codeExists) {
+      alert("Ce code de cours existe déjà.");
+      return;
+    }
+
+    const newCourse = {
+      id: Date.now(),
+      code: code.toUpperCase(),
+      name: name,
+      description: description,
+    };
+
+    setCourses([...courses, newCourse]);
+
+    setCode("");
+    setName("");
+    setDescription("");
+    setShowForm(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login");
+  const handleEdit = (course) => {
+    setEditingCourse(course);
+
+    setCode(course.code);
+    setName(course.name);
+    setDescription(course.description);
+
+    setShowForm(true);
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+
+    if (!code || !name || !description) {
+      alert("Veuillez remplir tous les champs.");
+      return;
+    }
+
+    const codeExists = courses.some(
+      (course) =>
+        course.id !== editingCourse.id &&
+        course.code.toLowerCase() === code.toLowerCase()
+    );
+
+    if (codeExists) {
+      alert("Ce code de cours existe déjà.");
+      return;
+    }
+
+    const updatedCourses = courses.map((course) =>
+      course.id === editingCourse.id
+        ? {
+          ...course,
+          code: code.toUpperCase(),
+          name: name,
+          description: description,
+        }
+        : course
+    );
+
+    setCourses(updatedCourses);
+
+    setEditingCourse(null);
+    setCode("");
+    setName("");
+    setDescription("");
+    setShowForm(false);
+  };
+
+  const handleDelete = (id) => {
+    const confirmation = window.confirm(
+      "Voulez-vous vraiment supprimer ce cours ?"
+    );
+
+    if (!confirmation) {
+      return;
+    }
+
+    setCourses(
+      courses.filter((course) => course.id !== id)
+    );
+  };
+
+
+  const handleCancel = () => {
+    setShowForm(false);
+    setEditingCourse(null);
+
+    setCode("");
+    setName("");
+    setDescription("");
   };
 
   return (
-    <div className="dashboard">
-      {/* En-tête admin standardisé */}
-      <header className="dashboard-header">
-        <div className="logo">
-          <h1>Exam Hub <span className="admin-badge-tag">Admin</span></h1>
+    <div className="admin-page">
+
+      <div className="page-header">
+        <div>
+          <h1>Gestion des cours</h1>
+          <p>Créer et gérer les cours de l'école.</p>
         </div>
 
-        <nav className="navbar">
-          <Link to="/admin">Tableau de bord</Link>
-          <Link to="/admin/students">Étudiants</Link>
-          <Link to="/admin/courses" className="active">Cours</Link>
-          <Link to="/admin/exams">Examens</Link>
-        </nav>
+        <button
+          className="primary-button"
+          onClick={() => {
+            setEditingCourse(null);
+            setCode("");
+            setName("");
+            setDescription("");
+            setShowForm(true);
+          }}
+        >
+          + Ajouter un cours
+        </button>
+      </div>
 
-        <div className="header-right">
-          <button onClick={handleLogout} className="logout-button">Déconnexion</button>
-        </div>
-      </header>
-
-      <main className="dashboard-content">
-        <div className="section-header">
-          <h2>Gestion des Cours 📚</h2>
-          <p>Créez et gérez les différents modules de formation (ex. PROG2, WEB1).</p>
-        </div>
-
-        {/* Formulaire d'ajout de cours */}
+      {showForm && (
         <div className="form-card">
-          <h3>Ajouter un nouveau cours</h3>
-          {error && <div className="alert error">{error}</div>}
-          {success && <div className="alert success">{success}</div>}
 
-          <form onSubmit={handleCreateCourse} className="inline-form">
+          <h2>
+            {editingCourse
+              ? "Modifier un cours"
+              : "Ajouter un cours"}
+          </h2>
+
+          <form
+            onSubmit={
+              editingCourse
+                ? handleUpdate
+                : handleAdd
+            }
+          >
+
             <div className="form-group">
-              <label>Code unique (ex: PROG2)</label>
+              <label>Code du cours</label>
+
               <input
                 type="text"
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="PROG2"
-                required
+                onChange={(e) =>
+                  setCode(e.target.value)
+                }
+                placeholder="Exemple : PROG2"
               />
             </div>
 
             <div className="form-group">
               <label>Nom du cours</label>
+
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Programmation Avancée"
-                required
+                onChange={(e) =>
+                  setName(e.target.value)
+                }
+                placeholder="Exemple : Programmation 2"
               />
             </div>
 
-            <div className="form-group full-width">
-              <label>Description (Qu'est-ce qu'on y fait ?)</label>
+            <div className="form-group">
+              <label>Description</label>
+
               <textarea
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description du contenu du cours..."
-                rows="2"
-                required
+                onChange={(e) =>
+                  setDescription(e.target.value)
+                }
+                placeholder="Description du cours"
+                rows="4"
               />
             </div>
 
-            <button type="submit" className="btn-primary">Créer le cours</button>
+            <div className="form-actions">
+
+              <button
+                type="submit"
+                className="primary-button"
+              >
+                {editingCourse
+                  ? "Enregistrer les modifications"
+                  : "Créer le cours"}
+              </button>
+
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={handleCancel}
+              >
+                Annuler
+              </button>
+
+            </div>
+
           </form>
         </div>
+      )}
 
-        {/* Tableau de la liste des cours */}
-        <div className="table-container">
-          <h3>Liste des cours enregistrés</h3>
-          {loading ? (
-            <p className="loading-text">Chargement des cours...</p>
-          ) : courses.length === 0 ? (
-            <p className="empty-text">Aucun cours trouvé pour le moment.</p>
-          ) : (
-            <table className="styled-table">
-              <thead>
-                <tr>
-                  <th>Code</th>
-                  <th>Titre / Nom</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {courses.map((course) => (
-                  <tr key={course.id || course.code}>
-                    <td><span className="badge-code">{course.code}</span></td>
-                    <td><strong>{course.name}</strong></td>
-                    <td>{course.description}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
-      </main>
+      <div className="table-card">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Nom</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            {courses.map((course) => (
+              <tr key={course.id}>
+
+                <td>{course.code}</td>
+
+                <td>{course.name}</td>
+
+                <td>{course.description}</td>
+
+                <td>
+                  <div className="actions">
+
+                    <button
+                      className="action-button"
+                      onClick={() =>
+                        handleEdit(course)
+                      }
+                    >
+                      Modifier
+                    </button>
+
+                    <button
+                      className="action-button danger"
+                      onClick={() =>
+                        handleDelete(course.id)
+                      }
+                    >
+                      Supprimer
+                    </button>
+
+                  </div>
+                </td>
+
+              </tr>
+            ))}
+
+          </tbody>
+
+        </table>
+
+        {courses.length === 0 && (
+          <p className="empty-message">
+            Aucun cours enregistré.
+          </p>
+        )}
+
+      </div>
+
     </div>
   );
 }
+
+export default Courses;
