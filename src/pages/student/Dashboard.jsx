@@ -28,78 +28,44 @@ function Dashboard() {
     };
 
     return (
-        <div className="dashboard">
-            <header className="dashboard-header">
-                { }
-                <div className="logo">
-                    <h1>Exam Hub</h1>
-                </div>
-
-                { }
-                <nav className="navbar">
-                    <Link to="/student" className="active">
-                        Tableau de bord
-                    </Link>
-                    <Link to="/student/exams">
-                        Examens
-                    </Link>
-                    <Link to="/student/results">
-                        Résultats
-                    </Link>
-                </nav>
-
-                { }
-                <div className="header-right">
-                    {user.name && (
-                        <div className="user-profile-header">
-                            <div className="user-profile-info">
-                                <h3>{user.name}</h3>
-                            </div>
-                            <div className="user-avatar">
-                                {user.name.charAt(0).toUpperCase()}
-                            </div>
-                        </div>
-                    )}
-
-                    <button onClick={handleLogout} className="logout-button">
-                        Déconnexion
-                    </button>
-                </div>
-            </header>
-
-            <main className="dashboard-content">
-                <section className="welcome-section">
-                    <h2>Bienvenue👋</h2>
+        <div className="admin-page">
+            <div className="page-header">
+                <div>
+                    <h1>Bienvenue 👋 {user.name && user.name}</h1>
                     <p>
-                        Retrouvez vos examens, passez vos QCM
-                        et consultez vos résultats.
+                        Retrouvez vos examens, passez vos QCM et consultez vos résultats.
                     </p>
-                </section>
+                </div>
+                <button onClick={handleLogout} className="action-button danger">
+                    Déconnexion
+                </button>
+            </div>
 
-                <section className="dashboard-cards">
-                    <div className="dashboard-card">
-                        <h3>📝 Examens</h3>
-                        <p>
-                            Consultez les examens disponibles
-                            et passez vos QCM.
-                        </p>
-                        <Link to="/student/exams">
+            <div className="card-grid">
+                <div className="card">
+                    <h3>📝 Examens</h3>
+                    <p>
+                        Consultez les examens disponibles et passez vos QCM.
+                    </p>
+                    <Link to="/student/exams" style={{ marginTop: "auto", pt: "1rem" }}>
+                        <button className="primary-button" style={{ width: "100%", marginTop: "1rem" }}>
                             Voir les examens
-                        </Link>
-                    </div>
+                        </button>
+                    </Link>
+                </div>
 
-                    <div className="dashboard-card">
-                        <h3>📊 Résultats</h3>
-                        <p>
-                            Consultez vos notes et les résultats
-                            de vos examens.
-                        </p>
-                        <Link to="/student/results">
+                <div className="card">
+                    <h3>📊 Résultats</h3>
+                    <p>
+                        Consultez vos notes et les résultats de vos examens.
+                    </p>
+                    <Link to="/student/results" style={{ marginTop: "auto" }}>
+                        <button className="secondary-button" style={{ width: "100%", marginTop: "1rem" }}>
                             Voir mes résultats
-                        </Link>
-                    </div>
-                </section>
-            </main>
+                        </button>
+                    </Link>
+                </div>
+            </div>
         </div>
     );
 }
