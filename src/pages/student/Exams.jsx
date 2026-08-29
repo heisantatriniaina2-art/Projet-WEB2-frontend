@@ -1,94 +1,77 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { apiFetch } from "../../api/client";
-import { useAuth } from "../../contexts/AuthContext";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Exams() {
-  const { token } = useAuth();
-
+export default function StudentExams() {
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchExams = async () => {
       try {
-        setLoading(true);
-        setError("");
-
-        const data = await apiFetch("/exams", {
-          token,
-        });
-
-        setExams(data);
+        const localExams = localStorage.getItem("exams");
+        if (localExams) {
+          setExams(JSON.parse(localExams));
+        } else {
+          setExams([
+            { id: 1, title: "Java Exam", description: "Evaluation on Object-Oriented Programming", duration: 120 },
+            { id: 2, title: "Database Exam", description: "SQL queries and modeling", duration: 90 }
+          ]);
+        }
       } catch (err) {
-        console.error(err);
-        setError("Unable to load exams.");
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    if (token) {
-      fetchExams();
-    }
-  }, [token]);
+    fetchExams();
+  }, [navigate]);
 
   if (loading) {
-    return <p>Loading exams...</p>;
+    return <div className="empty-message">Loading exams in progress...</div>;
+  }
+
+  if (error) {
+    return <div className="empty-message" style={{ color: "var(--danger-color)" }}>{error}</div>;
   }
 
   return (
-    <div className="student-exams">
-      <header className="dashboard-header">
-        <div className="logo">
-          <h1>ExamHub</h1>
+    <div className="admin-page">
+      <div className="page-header">
+        <div>
+          <h1>My Exams 📝</h1>
+          <p>Check the list of your available exams and access the questionnaires.</p>
         </div>
+      </div>
 
-        <nav className="navbar">
-          <Link to="/student">Dashboard</Link>
-
-          <Link to="/student/exams" className="active">
-            Exams
-          </Link>
-
-          <Link to="/student/results">Results</Link>
-        </nav>
-      </header>
-
-      <main className="exams-content">
-        <h2>Available Exams</h2>
-
-        {error && <p className="error-message">{error}</p>}
-
-        {!error && exams.length === 0 && (
+      {exams.length === 0 ? (
+        <div className="card empty-message">
           <p>No exams available at the moment.</p>
-        )}
-
-        <div className="exam-list">
+        </div>
+      ) : (
+        <div className="card-grid">
           {exams.map((exam) => (
-            <div className="exam-card" key={exam.id}>
-              <h3>{exam.title}</h3>
-
-              <p>{exam.description}</p>
-
-              <p>
-                <strong>Start:</strong>{" "}
-                {new Date(exam.start_at).toLocaleString()}
-              </p>
-
-              <p>
-                <strong>End:</strong>{" "}
-                {new Date(exam.end_at).toLocaleString()}
-              </p>
-
-              <Link to={`/student/exams/${exam.id}/take`}>
-                Start Exam
-              </Link>
+            <div key={exam.id || exam._id} className="card">
+              <h3>{exam.title || exam.name}</h3>
+              <p>{exam.description || "No description available for this exam."}</p>
+              <div style={{ marginTop: "auto" }}>
+                <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginBottom: "1rem" }}>
+                  <strong>Duration / Limit:</strong> {exam.duration ? `${exam.duration} minutes` : "Not specified"}
+                </p>
+                <button
+                  className="primary-button"
+                  style={{ width: "100%" }}
+                  onClick={() => navigate(`/student/exams/${exam.id || exam._id}`)}
+                >
+                  Take Exam
+                </button>
+              </div>
             </div>
           ))}
         </div>
-      </main>
+      )}
     </div>
   );
 }

@@ -31,7 +31,7 @@ function Dashboard() {
     <div className="admin-page">
       <div className="page-header">
         <div>
-          <h1>Welcome 👋 {user.name}</h1>
+          <h1>Welcome 👋  </h1>
           <p>
             Find your exams, take your quizzes, and view your results.
           </p>

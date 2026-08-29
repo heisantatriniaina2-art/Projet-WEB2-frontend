@@ -1,53 +1,53 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+    import { Link, useNavigate } from "react-router-dom";
+    import { useAuth } from "../contexts/AuthContext";
 
-function AdminNavbar() {
+    function AdminNavbar() {
 
-    const navigate = useNavigate();
-    const { user, logout } = useAuth();
+        const navigate = useNavigate();
+        const { user, logout } = useAuth();
 
-    const handleLogout = () => {
-        logout();
-        navigate("/login");
-    };
+        const handleLogout = () => {
+            logout();
+            navigate("/login");
+        };
 
-    return (
-        <header className="dashboard-header">
+        return (
+            <header className="dashboard-header">
 
-            <div className="logo">
-                <h1>ExamHub</h1>
-            </div>
+                <div className="logo">
+                    <h1>ExamHub</h1>
+                </div>
 
-            <nav className="navbar">
+                <nav className="navbar">
 
-                <Link to="/admin">
-                    Home
-                </Link>
+                    <Link to="/admin">
+                        Home
+                    </Link>
 
-                <Link to="/admin/students">
-                    Students
-                </Link>
+                    <Link to="/admin/students">
+                        Students
+                    </Link>
 
-                <Link to="/admin/courses">
-                    Courses
-                </Link>
+                    <Link to="/admin/courses">
+                        Courses
+                    </Link>
 
-                <Link to="/admin/exams">
-                    Exams
-                </Link>
+                    <Link to="/admin/exams">
+                        Exams
+                    </Link>
 
-                <span>
-                    {user?.firstName || user?.email}
-                </span>
+                    <span>
+                        {user?.firstName || user?.email}
+                    </span>
 
-                <button onClick={handleLogout}>
-                    Log out
-                </button>
+                    <button onClick={handleLogout}>
+                        Log out
+                    </button>
 
-            </nav>
+                </nav>
 
-        </header>
-    );
-}
+            </header>
+        );
+    }
 
-export default AdminNavbar;
+    export default AdminNavbar;
