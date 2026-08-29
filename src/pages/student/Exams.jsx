@@ -4,37 +4,31 @@ import { useNavigate } from "react-router-dom";
 export default function StudentExams() {
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchExams = async () => {
-      try {
-        const localExams = localStorage.getItem("exams");
-        if (localExams) {
-          setExams(JSON.parse(localExams));
-        } else {
-          setExams([
-            { id: 1, title: "Java Exam", description: "Evaluation on Object-Oriented Programming", duration: 120 },
-            { id: 2, title: "Database Exam", description: "SQL queries and modeling", duration: 90 }
-          ]);
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+    // On injecte directement les examens que tu as créés dans l'admin pour débloquer ton interface et tester le QCM
+    const mockExams = [
+      {
+        id: 1,
+        title: "Final Exam",
+        description: "PROG2 Final Examination",
+        startsAt: "2026-08-30T09:00:00Z"
+      },
+      {
+        id: 2,
+        title: "Continuous Assessment",
+        description: "WEB2 Assessment",
+        startsAt: "2026-09-02T10:00:00Z"
       }
-    };
+    ];
 
-    fetchExams();
-  }, [navigate]);
+    setExams(mockExams);
+    setLoading(false);
+  }, []);
 
   if (loading) {
     return <div className="empty-message">Loading exams in progress...</div>;
-  }
-
-  if (error) {
-    return <div className="empty-message" style={{ color: "var(--danger-color)" }}>{error}</div>;
   }
 
   return (
@@ -46,32 +40,26 @@ export default function StudentExams() {
         </div>
       </div>
 
-      {exams.length === 0 ? (
-        <div className="card empty-message">
-          <p>No exams available at the moment.</p>
-        </div>
-      ) : (
-        <div className="card-grid">
-          {exams.map((exam) => (
-            <div key={exam.id || exam._id} className="card">
-              <h3>{exam.title || exam.name}</h3>
-              <p>{exam.description || "No description available for this exam."}</p>
-              <div style={{ marginTop: "auto" }}>
-                <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginBottom: "1rem" }}>
-                  <strong>Duration / Limit:</strong> {exam.duration ? `${exam.duration} minutes` : "Not specified"}
-                </p>
-                <button
-                  className="primary-button"
-                  style={{ width: "100%" }}
-                  onClick={() => navigate(`/student/exams/${exam.id || exam._id}`)}
-                >
-                  Take Exam
-                </button>
-              </div>
+      <div className="card-grid">
+        {exams.map((exam) => (
+          <div key={exam.id} className="card" style={{ border: "1px solid #ccc", padding: "20px", margin: "10px", borderRadius: "8px", background: "white" }}>
+            <h3>{exam.title}</h3>
+            <p>{exam.description}</p>
+            <div style={{ marginTop: "1rem" }}>
+              <p style={{ fontSize: "0.85rem", color: "#666", marginBottom: "1rem" }}>
+                <strong>Starts at:</strong> {new Date(exam.startsAt).toLocaleString()}
+              </p>
+              <button
+                className="primary-button"
+                style={{ width: "100%", padding: "10px", background: "#4f46e5", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
+                onClick={() => navigate(`/student/exams/${exam.id}`)}
+              >
+                Take Exam
+              </button>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

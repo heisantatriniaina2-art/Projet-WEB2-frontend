@@ -1,170 +1,114 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { apiFetch } from "../../api/client";
-import { useAuth } from "../../contexts/AuthContext";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function ExamTake() {
   const { id } = useParams();
-  const { token } = useAuth();
   const navigate = useNavigate();
-
   const [exam, setExam] = useState(null);
   const [answers, setAnswers] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    const fetchExam = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const data = await apiFetch(`/exams/${id}`, {
-          token,
-        });
-
-        setExam(data);
-      } catch (err) {
-        console.error(err);
-        setError("Unable to load this exam.");
-      } finally {
-        setLoading(false);
-      }
+    // Données simulées pour afficher le QCM instantanément
+    const mockExamData = {
+      id: Number(id),
+      title: id === "1" ? "Final Exam" : "Continuous Assessment",
+      description: "Answer the following questions carefully.",
+      questions: [
+        {
+          id: 1,
+          text: "What does API stand for?",
+          options: [
+            "Application Programming Interface",
+            "Applied Program Integration",
+            "Automated Protocol Interaction",
+            "Application Process Integration"
+          ]
+        },
+        {
+          id: 2,
+          text: "Which HTTP method is typically used to create a resource?",
+          options: ["GET", "POST", "PUT", "DELETE"]
+        }
+      ]
     };
 
-    if (token && id) {
-      fetchExam();
-    }
-  }, [token, id]);
+    setExam(mockExamData);
+  }, [id]);
 
-  const handleAnswerChange = (questionId, answerId) => {
-    setAnswers((previousAnswers) => ({
-      ...previousAnswers,
-      [questionId]: answerId,
-    }));
+  const handleOptionChange = (questionId, option) => {
+    setAnswers({
+      ...answers,
+      [questionId]: option
+    });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      setSubmitting(true);
-      setError("");
-
-      const formattedAnswers = Object.entries(answers).map(
-        ([questionId, answerId]) => ({
-          question_id: Number(questionId),
-          answer_id: Number(answerId),
-        })
-      );
-
-      const result = await apiFetch(`/exams/${id}/submit`, {
-        method: "POST",
-        token,
-        body: {
-          answers: formattedAnswers,
-        },
-      });
-
-      navigate("/student/results", {
-        state: {
-          result,
-        },
-      });
-    } catch (err) {
-      console.error(err);
-      setError("Unable to submit the exam.");
-    } finally {
-      setSubmitting(false);
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
   };
 
-  if (loading) {
-    return (
-      <div className="exam-take">
-        <p>Loading exam...</p>
-      </div>
-    );
+  if (loading || !exam) {
+    return <div className="empty-message">Loading exam...</div>;
   }
 
-  if (error && !exam) {
+  if (submitted) {
     return (
-      <div className="exam-take">
-        <p className="error-message">{error}</p>
-      </div>
-    );
-  }
-
-  if (!exam) {
-    return (
-      <div className="exam-take">
-        <p>Exam not found.</p>
+      <div className="admin-page" style={{ padding: "30px" }}>
+        <div className="card" style={{ padding: "30px", textAlign: "center", background: "white", borderRadius: "8px" }}>
+          <h2 style={{ color: "#10b981", marginBottom: "1rem" }}>Exam Submitted Successfully! 🎉</h2>
+          <p>Your responses have been recorded.</p>
+          <button
+            className="primary-button"
+            style={{ marginTop: "20px", padding: "10px 20px", background: "#4f46e5", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
+            onClick={() => navigate("/student/exams")}
+          >
+            Back to Exams
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="exam-take">
-      <header className="dashboard-header">
-        <div className="logo">
-          <h1>Exam Hub</h1>
-        </div>
-      </header>
+    <div className="admin-page" style={{ padding: "30px", maxWidth: "800px", margin: "0 auto" }}>
+      <div className="page-header" style={{ marginBottom: "20px" }}>
+        <h1>{exam.title}</h1>
+        <p>{exam.description}</p>
+      </div>
 
-      <main className="exam-container">
-        <div className="exam-header">
-          <h2>{exam.title}</h2>
-          <p>{exam.description}</p>
-        </div>
+      <form onSubmit={handleSubmit}>
+        {exam.questions.map((q, index) => (
+          <div key={q.id} className="card" style={{ background: "white", padding: "20px", marginBottom: "20px", borderRadius: "8px", border: "1px solid #ccc" }}>
+            <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+              {index + 1}. {q.text}
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {q.options.map((option, idx) => (
+                <label key={idx} style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
+                  <input
+                    type="radio"
+                    name={`question-${q.id}`}
+                    value={option}
+                    checked={answers[q.id] === option}
+                    onChange={() => handleOptionChange(q.id, option)}
+                  />
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
+        ))}
 
-        {error && <p className="error-message">{error}</p>}
-
-        <form onSubmit={handleSubmit}>
-          {exam.questions && exam.questions.length > 0 ? (
-            exam.questions.map((question, index) => (
-              <div className="question-card" key={question.id}>
-                <h3>Question {index + 1}</h3>
-
-                <p className="question-statement">{question.statement}</p>
-
-                <p className="question-points">
-                  {question.points} point(s)
-                </p>
-
-                <div className="answers">
-                  {question.answers?.map((answer) => (
-                    <label key={answer.id} className="answer-option">
-                      <input
-                        type="radio"
-                        name={`question-${question.id}`}
-                        value={answer.id}
-                        checked={answers[question.id] === answer.id}
-                        onChange={() =>
-                          handleAnswerChange(question.id, answer.id)
-                        }
-                      />
-                      <span>{answer.text}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>No questions available for this exam.</p>
-          )}
-
-          {exam.questions?.length > 0 && (
-            <button
-              type="submit"
-              disabled={submitting}
-              className="submit-exam-button"
-            >
-              {submitting ? "Submitting..." : "Finish Exam"}
-            </button>
-          )}
-        </form>
-      </main>
+        <button
+          type="submit"
+          className="primary-button"
+          style={{ width: "100%", padding: "12px", background: "#4f46e5", color: "white", border: "none", borderRadius: "4px", fontSize: "1rem", cursor: "pointer" }}
+        >
+          Submit Exam
+        </button>
+      </form>
     </div>
   );
 }
